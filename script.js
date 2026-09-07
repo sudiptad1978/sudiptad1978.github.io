@@ -12,6 +12,9 @@
   const menuToggle = document.getElementById('menuToggle');
   const siteNav = document.getElementById('siteNav');
   const rail = document.querySelector('.rail');
+  const blogCarousel = document.getElementById('blogCarousel');
+  const blogCarouselPrevious = document.getElementById('blogCarouselPrevious');
+  const blogCarouselNext = document.getElementById('blogCarouselNext');
   const prefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
   year.textContent = new Date().getFullYear();
@@ -38,6 +41,76 @@
     window.addEventListener('resize', () => {
       if (window.innerWidth > 760) setMenu(false);
     });
+  }
+
+  function escapeBlogValue(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function parseBlogFrontmatter(markdown) {
+    const match = markdown.match(/^---\s*\n([\s\S]*?)\n---\s*\n?/);
+    if (!match) return {};
+    const data = {};
+    match[1].split('\n').forEach((line) => {
+      const separator = line.indexOf(':');
+      if (separator === -1) return;
+      const key = line.slice(0, separator).trim();
+      const raw = line.slice(separator + 1).trim();
+      if (raw.startsWith('[')) {
+        try { data[key] = JSON.parse(raw.replace(/'/g, '"')); } catch (error) { data[key] = []; }
+      } else {
+        data[key] = raw.replace(/^['"]|['"]$/g, '');
+      }
+    });
+    return data;
+  }
+
+  function formatBlogDate(date) {
+    return new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
+  }
+
+  function renderPortfolioBlog(posts) {
+    if (!blogCarousel) return;
+    blogCarousel.innerHTML = posts.map((post, index) => `
+      <a class="portfolio-blog-card" href="/blog/${encodeURIComponent(post.slug)}" data-automation-id="portfolio-blog-card-${index + 1}">
+        <div class="portfolio-blog-card-meta" data-automation-id="portfolio-blog-card-meta-${index + 1}"><span>${escapeBlogValue(formatBlogDate(post.date))}</span><span>${escapeBlogValue(post.readTime || 'Technical note')}</span></div>
+        <h3 data-automation-id="portfolio-blog-card-title-${index + 1}">${escapeBlogValue(post.title)}</h3>
+        <p data-automation-id="portfolio-blog-card-summary-${index + 1}">${escapeBlogValue(post.summary || '')}</p>
+        <span class="portfolio-blog-card-link">Read note <span>↗</span></span>
+      </a>
+    `).join('');
+    blogCarousel.querySelectorAll('*').forEach((element, index) => {
+      if (!element.hasAttribute('data-automation-id')) element.setAttribute('data-automation-id', `portfolio-blog-element-${index + 1}`);
+    });
+  }
+
+  async function loadPortfolioBlog() {
+    if (!blogCarousel) return;
+    try {
+      const indexResponse = await fetch('/content/blog/index.json', { cache: 'no-cache' });
+      if (!indexResponse.ok) throw new Error('Could not load blog index.');
+      const entries = await indexResponse.json();
+      const posts = await Promise.all(entries.map(async (entry) => {
+        const postResponse = await fetch(entry.file, { cache: 'no-cache' });
+        if (!postResponse.ok) throw new Error(`Could not load ${entry.slug}.`);
+        return { ...entry, ...parseBlogFrontmatter(await postResponse.text()) };
+      }));
+      renderPortfolioBlog(posts.sort((a, b) => new Date(b.date) - new Date(a.date)));
+    } catch (error) {
+      blogCarousel.innerHTML = '<div class="portfolio-blog-loading" data-automation-id="portfolio-blog-error">Notes are temporarily unavailable. Visit the blog to try again.</div>';
+    }
+  }
+
+  if (blogCarousel) {
+    const scrollCarousel = (direction) => blogCarousel.scrollBy({ left: direction * Math.max(blogCarousel.clientWidth * .82, 290), behavior: 'smooth' });
+    blogCarouselPrevious.addEventListener('click', () => scrollCarousel(-1));
+    blogCarouselNext.addEventListener('click', () => scrollCarousel(1));
+    loadPortfolioBlog();
   }
 
   function setTheme(mode, save) {
