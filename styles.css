@@ -645,3 +645,36 @@ h2 span { color: var(--muted); }
   .topbar-label { font-size: .74rem; }
   .section-label, .section-label-heading, .eyebrow { font-size: .7rem; }
 }
+/* ==========================================================================
+   Hero emphasis pass - Sudipta Dutta portfolio (2026-09)
+   1. Eyebrow: leading whitespace removed in HTML; bigger + bolder here.
+   2. Hero headline: single line (no forced <br>) + solid (bold) weight.
+   3. Hero CTA row ("Let's work together / Get the resume") removed from HTML.
+   Scoped to .hero so other .eyebrow usages (contact) are untouched.
+   ========================================================================== */
+.hero .eyebrow {
+  font-size: clamp(0.95rem, 1.7vw, 1.35rem); /* larger than hero-lede text */
+  font-weight: 700;                          /* solid, not 500 */
+  letter-spacing: 0.07em;
+  line-height: 1.35;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.hero h1 {
+  font-weight: 700;                          /* bold headline */
+  letter-spacing: -0.045em;
+  line-height: 0.98;
+  font-size: clamp(1.9rem, 3.6vw, 3.5rem);   /* sized for natural wrapping < 1100px */
+}
+
+@media (min-width: 1100px) {
+  .hero h1 {
+    white-space: nowrap;                     /* one single line on desktop */
+    font-size: clamp(2rem, 3.05vw, 3.3rem);  /* tuned so the full phrase fits one line */
+  }
+}
+
+@media (max-width: 760px) {
+  .hero h1 { font-size: clamp(2.2rem, 8.5vw, 3rem); }
+}
