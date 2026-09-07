@@ -484,3 +484,67 @@ h2 span { color: var(--muted); }
   .portfolio-blog-card { flex-basis: 83vw; min-height: 220px; }
   .portfolio-blog-carousel { margin-right: -16px; padding-right: 20px; }
 }
+
+/* Final typography and section-rhythm pass. */
+.hero h1 {
+  max-width: 760px;
+  margin: 22px 0 20px;
+  font-size: clamp(2.75rem, 5.2vw, 4.75rem);
+  line-height: .96;
+  letter-spacing: -.075em;
+}
+.intro-content h2,
+.stack-headline h2,
+.experience-head h2,
+.contact-copy h2 {
+  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+  line-height: 1.08;
+  letter-spacing: -.055em;
+}
+.intro-content h2 { white-space: nowrap; margin-bottom: 18px; }
+.intro-content h2 span { color: var(--muted); }
+.stack-headline h2, .experience-head h2 { margin-bottom: 0; }
+.capability-card h3, .snapshot-panel h3, .education-item h3 { font-size: 1.08rem; line-height: 1.25; }
+.section-label-heading {
+  display: block;
+  margin: 0;
+  padding-top: 6px;
+  color: var(--faint);
+  font: var(--type-xs)/1.4 var(--mono);
+  font-weight: 400;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.hero { min-height: 520px; }
+.hero-copy { padding-top: 48px; padding-bottom: 44px; }
+.hero-actions { margin-top: 27px; }
+.hero-note { margin-top: 28px; }
+.intro-grid { padding-top: 46px; padding-bottom: 50px; }
+.quote-card { margin-top: 28px; }
+.capability-section, .stack-section, .snapshot-section { padding-top: 44px; padding-bottom: 52px; }
+.capability-card { min-height: 226px; padding-top: 19px; }
+.capability-icon { height: 45px; }
+.stack-headline { margin-bottom: 27px; }
+.experience-section { padding-top: 44px; padding-bottom: 58px; }
+.experience-head { margin-bottom: 40px; }
+.timeline-item { padding-bottom: 42px; }
+.timeline-item.compact { padding-bottom: 30px; }
+.snapshot-panel { min-height: 132px; padding: 20px 21px; }
+.education-section { padding-top: 44px; padding-bottom: 52px; }
+.education-item { padding: 20px 21px; }
+.contact-section { padding-top: 58px; padding-bottom: 62px; }
+.contact-copy h2 { margin-top: 20px; margin-bottom: 18px; }
+.contact-copy > p { margin-bottom: 24px; }
+
+@media (max-width: 760px) {
+  .hero { min-height: auto; }
+  .capability-card { min-height: auto; }
+  .hero h1 { font-size: clamp(2.45rem, 10vw, 3.5rem); line-height: .98; }
+  .intro-content h2 { white-space: normal; }
+  .intro-grid { padding-top: 38px; padding-bottom: 44px; }
+  .capability-section, .stack-section, .snapshot-section { padding-top: 37px; padding-bottom: 44px; }
+  .experience-section { padding-top: 37px; padding-bottom: 48px; }
+  .education-section { padding-top: 37px; padding-bottom: 44px; }
+  .contact-section { padding-top: 46px; padding-bottom: 50px; }
+  .quote-card { margin-top: 22px; }
+}
