@@ -1,0 +1,18 @@
+# Local preview/deployment output
+/deploy/
+/.wrangler/
+/.config/
+/.agents/
+/uploads/
+
+# Local caches and dependencies
+node_modules/
+.npm/
+.cache/
+*.log
+.DS_Store
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
