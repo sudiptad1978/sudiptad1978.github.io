@@ -548,3 +548,55 @@ h2 span { color: var(--muted); }
   .contact-section { padding-top: 46px; padding-bottom: 50px; }
   .quote-card { margin-top: 22px; }
 }
+
+/* Accessibility, feedback and interaction polish. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.theme-menu button:focus-visible, .copy-link:focus-visible, .primary-button:focus-visible, .secondary-button:focus-visible, .nav-link:focus-visible { outline-offset: 3px; }
+.toast {
+  position: fixed;
+  z-index: 80;
+  right: clamp(16px, 3vw, 36px);
+  bottom: 24px;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 12px 15px;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  font: var(--type-sm)/1.4 var(--mono);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .2s, transform .2s;
+}
+.toast.is-visible { opacity: 1; transform: translateY(0); }
+.stat { padding-top: 30px; padding-bottom: 32px; }
+.stat strong { font-size: clamp(2.5rem, 4vw, 4rem); line-height: .95; }
+.stat > span { line-height: 1.35; }
+.stack-list { gap: 0 18px; }
+.stack-list span { margin-right: 0; overflow-wrap: anywhere; }
+.capability-card { overflow: hidden; }
+.capability-card::after { content: ''; position: absolute; left: 0; bottom: 0; width: 0; height: 2px; background: var(--accent); transition: width .25s ease; }
+.capability-card:hover::after, .capability-card:focus-within::after { width: 100%; }
+.capability-card:focus-within { border-color: var(--accent); background: var(--surface-2); transform: translateY(-3px); }
+.quote-card { border-color: color-mix(in srgb, var(--accent) 46%, var(--line-strong)); background: linear-gradient(132deg, var(--accent-soft), color-mix(in srgb, var(--surface) 78%, var(--accent-soft)) 70%); box-shadow: inset 3px 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+.quote-mark { font-size: 68px; top: 10px; left: 20px; opacity: .78; }
+.portfolio-blog-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-color: var(--accent); }
+.portfolio-blog-carousel:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+@media (max-width: 760px) {
+  .stat { padding-top: 24px; padding-bottom: 26px; }
+  .stat strong { font-size: clamp(2.25rem, 10vw, 3.25rem); }
+  .stack-list { gap: 0 12px; }
+  .stack-list span { padding-right: 0; margin-right: 0; font-size: .94rem; }
+}

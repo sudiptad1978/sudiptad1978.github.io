@@ -306,3 +306,12 @@ The JavaScript QR code follows the current origin automatically. The static fall
 - `wrangler.toml` declares the Cloudflare Pages project and root output directory.
 
 Keep credentials outside the repository and review deployment output before sharing preview URLs.
+
+## SEO and accessibility QA
+
+- `sitemap.xml` lists the portfolio, blog index and all published article routes.
+- `robots.txt` allows crawling and points search engines to the sitemap.
+- The portfolio includes `Person` and `ProfilePage` JSON-LD structured data.
+- Blog article routes include unique descriptions, Open Graph titles/descriptions/URLs/images and article type metadata.
+- The production dark-theme text colors were checked against WCAG AA contrast thresholds; primary, muted, faint and accent text all pass 4.5:1 for normal text.
+- Submit `https://sudipta-dutta-portfolio.pages.dev/sitemap.xml` in Google Search Console after verifying the site property. Search Console submission requires access to the property and cannot be performed by the static deployment itself.

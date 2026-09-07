@@ -4,8 +4,10 @@
   const body = document.body;
   const themeToggle = document.getElementById('themeToggle');
   const themeMenu = document.getElementById('themeMenu');
+  const themeStatus = document.getElementById('themeStatus');
   const year = document.getElementById('year');
   const copyLink = document.getElementById('copyLink');
+  const toast = document.getElementById('toast');
   const qrCode = document.getElementById('qrCode');
   const modeOptions = [...document.querySelectorAll('.mode-option')];
   const accentOptions = [...document.querySelectorAll('.accent-option')];
@@ -36,7 +38,13 @@
       if (rail.classList.contains('menu-open') && !rail.contains(event.target)) setMenu(false);
     });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') setMenu(false);
+      if (event.key !== 'Escape') return;
+      setMenu(false);
+      if (themeMenu && !themeMenu.hidden) {
+        themeMenu.hidden = true;
+        themeToggle.setAttribute('aria-expanded', 'false');
+        themeToggle.focus();
+      }
     });
     window.addEventListener('resize', () => {
       if (window.innerWidth > 760) setMenu(false);
@@ -77,7 +85,7 @@
   function renderPortfolioBlog(posts) {
     if (!blogCarousel) return;
     blogCarousel.innerHTML = posts.map((post, index) => `
-      <a class="portfolio-blog-card" href="/blog/${encodeURIComponent(post.slug)}" data-automation-id="portfolio-blog-card-${index + 1}">
+      <a class="portfolio-blog-card" href="/blog/${encodeURIComponent(post.slug)}" aria-label="Read article: ${escapeBlogValue(post.title)}" data-automation-id="portfolio-blog-card-${index + 1}">
         <div class="portfolio-blog-card-meta" data-automation-id="portfolio-blog-card-meta-${index + 1}"><span>${escapeBlogValue(formatBlogDate(post.date))}</span><span>${escapeBlogValue(post.readTime || 'Technical note')}</span></div>
         <h3 data-automation-id="portfolio-blog-card-title-${index + 1}">${escapeBlogValue(post.title)}</h3>
         <p data-automation-id="portfolio-blog-card-summary-${index + 1}">${escapeBlogValue(post.summary || '')}</p>
@@ -108,22 +116,41 @@
 
   if (blogCarousel) {
     const scrollCarousel = (direction) => blogCarousel.scrollBy({ left: direction * Math.max(blogCarousel.clientWidth * .82, 290), behavior: 'smooth' });
-    blogCarouselPrevious.addEventListener('click', () => scrollCarousel(-1));
-    blogCarouselNext.addEventListener('click', () => scrollCarousel(1));
+    if (blogCarouselPrevious) blogCarouselPrevious.addEventListener('click', () => scrollCarousel(-1));
+    if (blogCarouselNext) blogCarouselNext.addEventListener('click', () => scrollCarousel(1));
+    blogCarousel.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); scrollCarousel(-1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); scrollCarousel(1); }
+    });
     loadPortfolioBlog();
   }
 
   function setTheme(mode, save) {
     const effective = mode === 'system' ? (prefersDark && prefersDark.matches ? 'dark' : 'light') : mode;
     body.dataset.theme = effective;
-    modeOptions.forEach((option) => option.classList.toggle('active', option.dataset.mode === mode));
-    if (save) localStorage.setItem('sd-theme-mode', mode);
+    modeOptions.forEach((option) => {
+      const selected = option.dataset.mode === mode;
+      option.classList.toggle('active', selected);
+      option.setAttribute('aria-pressed', String(selected));
+    });
+    if (themeToggle) themeToggle.setAttribute('aria-label', `Open appearance settings. Current mode: ${mode}.`);
+    if (save) {
+      localStorage.setItem('sd-theme-mode', mode);
+      if (themeStatus) themeStatus.textContent = `Color mode set to ${mode}.`;
+    }
   }
 
   function setAccent(accent, save) {
     body.dataset.accent = accent;
-    accentOptions.forEach((option) => option.classList.toggle('active', option.dataset.accent === accent));
-    if (save) localStorage.setItem('sd-accent', accent);
+    accentOptions.forEach((option) => {
+      const selected = option.dataset.accent === accent;
+      option.classList.toggle('active', selected);
+      option.setAttribute('aria-pressed', String(selected));
+    });
+    if (save) {
+      localStorage.setItem('sd-accent', accent);
+      if (themeStatus) themeStatus.textContent = `${accent} accent selected.`;
+    }
   }
 
   const savedMode = localStorage.getItem('sd-theme-mode') || 'dark';
@@ -135,6 +162,7 @@
     const isOpen = !themeMenu.hidden;
     themeMenu.hidden = isOpen;
     themeToggle.setAttribute('aria-expanded', String(!isOpen));
+    if (!isOpen) window.setTimeout(() => modeOptions[0]?.focus(), 0);
   });
   modeOptions.forEach((button) => button.addEventListener('click', () => setTheme(button.dataset.mode, true)));
   accentOptions.forEach((button) => button.addEventListener('click', () => setAccent(button.dataset.accent, true)));
@@ -147,6 +175,22 @@
   if (prefersDark) prefersDark.addEventListener('change', () => {
     if ((localStorage.getItem('sd-theme-mode') || 'dark') === 'system') setTheme('system', false);
   });
+
+  function enableAnchorFocus() {
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener('click', () => {
+        const targetId = link.getAttribute('href').slice(1);
+        if (!targetId) return;
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        window.setTimeout(() => {
+          if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        }, 0);
+      });
+    });
+  }
+  enableAnchorFocus();
 
   // A small dependency-free QR encoder. It creates a QR for the current deployed URL,
   // so the code remains correct on a custom Cloudflare Pages domain without a build step.
@@ -332,14 +376,29 @@
     : 'https://sudipta-dutta.pages.dev/';
   qrCode.innerHTML = QR.create(profileUrl);
   qrCode.setAttribute('data-automation-id', 'profile-qr-code');
+  qrCode.setAttribute('data-qr-value', profileUrl);
   qrCode.querySelectorAll('*').forEach((element, index) => {
     if (!element.hasAttribute('data-automation-id')) element.setAttribute('data-automation-id', `profile-qr-element-${index + 1}`);
   });
+  let toastTimer;
+  function showToast(message) {
+    if (!toast) return;
+    toast.textContent = message;
+    toast.hidden = false;
+    toast.classList.add('is-visible');
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => {
+      toast.classList.remove('is-visible');
+      toast.hidden = true;
+    }, 2400);
+  }
+
   copyLink.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(profileUrl);
-      copyLink.innerHTML = 'Profile link copied <span>✓</span>';
-      setTimeout(() => { copyLink.innerHTML = 'Copy profile link <span>⧉</span>'; }, 2200);
+      copyLink.setAttribute('aria-label', 'Profile link copied');
+      showToast('Profile link copied to clipboard.');
+      setTimeout(() => copyLink.setAttribute('aria-label', 'Copy profile link'), 2200);
     } catch (error) {
       window.prompt('Copy this profile link:', profileUrl);
     }

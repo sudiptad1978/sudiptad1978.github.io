@@ -4,6 +4,7 @@
   const body = document.body;
   const themeToggle = document.getElementById('themeToggle');
   const themeMenu = document.getElementById('themeMenu');
+  const themeStatus = document.getElementById('themeStatus');
   const modeOptions = [...document.querySelectorAll('.mode-option')];
   const accentOptions = [...document.querySelectorAll('.accent-option')];
   const postList = document.getElementById('postList');
@@ -55,14 +56,29 @@
   function setTheme(mode, save) {
     const effective = mode === 'system' ? (prefersDark && prefersDark.matches ? 'dark' : 'light') : mode;
     body.dataset.theme = effective;
-    modeOptions.forEach((option) => option.classList.toggle('active', option.dataset.mode === mode));
-    if (save) localStorage.setItem('sd-theme-mode', mode);
+    modeOptions.forEach((option) => {
+      const selected = option.dataset.mode === mode;
+      option.classList.toggle('active', selected);
+      option.setAttribute('aria-pressed', String(selected));
+    });
+    if (themeToggle) themeToggle.setAttribute('aria-label', `Open appearance settings. Current mode: ${mode}.`);
+    if (save) {
+      localStorage.setItem('sd-theme-mode', mode);
+      if (themeStatus) themeStatus.textContent = `Color mode set to ${mode}.`;
+    }
   }
 
   function setAccent(accent, save) {
     body.dataset.accent = accent;
-    accentOptions.forEach((option) => option.classList.toggle('active', option.dataset.accent === accent));
-    if (save) localStorage.setItem('sd-accent', accent);
+    accentOptions.forEach((option) => {
+      const selected = option.dataset.accent === accent;
+      option.classList.toggle('active', selected);
+      option.setAttribute('aria-pressed', String(selected));
+    });
+    if (save) {
+      localStorage.setItem('sd-accent', accent);
+      if (themeStatus) themeStatus.textContent = `${accent} accent selected.`;
+    }
   }
 
   setTheme(localStorage.getItem('sd-theme-mode') || 'dark', false);
@@ -73,6 +89,7 @@
       const open = !themeMenu.hidden;
       themeMenu.hidden = open;
       themeToggle.setAttribute('aria-expanded', String(!open));
+      if (!open) window.setTimeout(() => modeOptions[0]?.focus(), 0);
     });
     document.addEventListener('click', (event) => {
       if (!themeMenu.hidden && !themeMenu.contains(event.target) && !themeToggle.contains(event.target)) {
@@ -80,11 +97,29 @@
         themeToggle.setAttribute('aria-expanded', 'false');
       }
     });
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || themeMenu.hidden) return;
+      themeMenu.hidden = true;
+      themeToggle.setAttribute('aria-expanded', 'false');
+      themeToggle.focus();
+    });
   }
   modeOptions.forEach((option) => option.addEventListener('click', () => setTheme(option.dataset.mode, true)));
   accentOptions.forEach((option) => option.addEventListener('click', () => setAccent(option.dataset.accent, true)));
   if (prefersDark) prefersDark.addEventListener('change', () => {
     if ((localStorage.getItem('sd-theme-mode') || 'dark') === 'system') setTheme('system', false);
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const targetId = link.getAttribute('href').slice(1);
+      const target = targetId ? document.getElementById(targetId) : null;
+      if (!target) return;
+      window.setTimeout(() => {
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }, 0);
+    });
   });
 
   const escapeHtml = (value) => String(value)
@@ -198,6 +233,34 @@
     return new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
   }
 
+  function setMeta(attribute, value, content) {
+    let element = document.head.querySelector(`meta[${attribute}="${value}"]`);
+    if (!element) {
+      element = document.createElement('meta');
+      element.setAttribute(attribute, value);
+      document.head.appendChild(element);
+    }
+    element.setAttribute('content', content);
+  }
+
+  function updatePostMetadata(post) {
+    const origin = window.location.origin === 'null' ? 'https://sudipta-dutta-portfolio.pages.dev' : window.location.origin;
+    const url = `${origin}${window.location.pathname}`;
+    const image = `${origin}/assets/profile.jpeg`;
+    const description = post.summary || 'Technical note by Sudipta Dutta on quality engineering and test automation.';
+    document.title = `${post.title} — Sudipta Dutta`;
+    setMeta('name', 'description', description);
+    setMeta('property', 'og:title', `${post.title} — Sudipta Dutta`);
+    setMeta('property', 'og:description', description);
+    setMeta('property', 'og:type', 'article');
+    setMeta('property', 'og:url', url);
+    setMeta('property', 'og:image', image);
+    setMeta('name', 'twitter:card', 'summary_large_image');
+    setMeta('name', 'twitter:title', `${post.title} — Sudipta Dutta`);
+    setMeta('name', 'twitter:description', description);
+    setMeta('name', 'twitter:image', image);
+  }
+
   async function loadPosts() {
     const response = await fetch('/content/blog/index.json', { cache: 'no-cache' });
     if (!response.ok) throw new Error('Could not load the blog index.');
@@ -214,11 +277,11 @@
   function renderPostList(posts) {
     if (!postList) return;
     postList.innerHTML = posts.map((post, index) => `
-      <a class="post-card ${index === 0 ? 'featured-post' : ''}" data-automation-id="post-card-${index + 1}" href="/blog/${encodeURIComponent(post.slug)}">
+      <a class="post-card ${index === 0 ? 'featured-post' : ''}" data-automation-id="post-card-${index + 1}" href="/blog/${encodeURIComponent(post.slug)}" aria-label="Read article: ${escapeHtml(post.title)}">
         <div class="post-card-meta" data-automation-id="post-card-meta-${index + 1}"><span>${escapeHtml(formatDate(post.date))}</span><span>${escapeHtml(post.readTime || 'Technical note')}</span></div>
         <h2 data-automation-id="post-card-title-${index + 1}">${escapeHtml(post.title)}</h2>
         <p data-automation-id="post-card-summary-${index + 1}">${escapeHtml(post.summary)}</p>
-        <div class="post-card-footer" data-automation-id="post-card-footer-${index + 1}"><span>${(Array.isArray(post.tags) ? post.tags : []).map((tag, tagIndex) => `<span data-automation-id="post-card-tag-${index + 1}-${tagIndex + 1}">${escapeHtml(tag)}</span>`).join('')}</span><span class="post-arrow">Read note ↗</span></div>
+        <div class="post-card-footer" data-automation-id="post-card-footer-${index + 1}"><span>${(Array.isArray(post.tags) ? post.tags : []).map((tag, tagIndex) => `<span data-automation-id="post-card-tag-${index + 1}-${tagIndex + 1}">${escapeHtml(tag)}</span>`).join('')}</span><span class="post-arrow" aria-hidden="true">Read note ↗</span></div>
       </a>
     `).join('');
     assignAutomationIds(postList, 'post-list');
@@ -226,7 +289,7 @@
 
   function renderPost(post) {
     if (!postMeta || !postContent) return;
-    document.title = `${post.title} — Sudipta Dutta`;
+    updatePostMetadata(post);
     postMeta.innerHTML = `
       <div class="post-kicker" data-automation-id="post-kicker"><span class="eyebrow-line"></span> ${escapeHtml(formatDate(post.date))} · ${escapeHtml(post.readTime || 'Technical note')}</div>
       <h1 data-automation-id="post-title">${escapeHtml(post.title)}</h1>
