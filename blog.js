@@ -59,6 +59,7 @@
     modeOptions.forEach((option) => {
       const selected = option.dataset.mode === mode;
       option.classList.toggle('active', selected);
+      option.setAttribute('aria-checked', String(selected));
       option.setAttribute('aria-pressed', String(selected));
     });
     if (themeToggle) themeToggle.setAttribute('aria-label', `Open appearance settings. Current mode: ${mode}.`);

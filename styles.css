@@ -600,3 +600,48 @@ h2 span { color: var(--muted); }
   .stack-list { gap: 0 12px; }
   .stack-list span { padding-right: 0; margin-right: 0; font-size: .94rem; }
 }
+
+/* Stronger label hierarchy and iOS-style color-mode radios. */
+.topbar-label { font-size: .8rem; font-weight: 600; letter-spacing: .1em; color: var(--muted); }
+.rail-topline, .eyebrow, .section-label, .timeline-meta, .education-year, .qr-head, .opportunity-kicker, .post-kicker, .blog-back, .text-button, .theme-button, .footer, .post-card-meta, .portfolio-blog-card-meta { font-weight: 500; }
+.section-label, .section-label-heading { font-size: .75rem; letter-spacing: .1em; }
+.eyebrow { font-size: .75rem; letter-spacing: .1em; margin-bottom: 8px; }
+.theme-menu { padding: 20px; }
+.theme-menu-title { font-size: .75rem; font-weight: 600; margin-bottom: 12px; }
+.theme-modes { display: flex; flex-direction: column; gap: 4px; }
+.mode-option {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 39px;
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  text-align: left;
+  font-size: .8rem;
+  cursor: pointer;
+  transition: color .2s, background .2s, border-color .2s;
+}
+.mode-option::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 4px var(--surface);
+  transition: background .2s, border-color .2s, box-shadow .2s;
+}
+.mode-option:hover, .mode-option:focus-visible { color: var(--ink); background: var(--accent-soft); border-color: var(--line-strong); }
+.mode-option.active { color: var(--ink); background: var(--accent-soft); border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); }
+.mode-option.active::before { border-color: var(--accent); background: var(--accent); box-shadow: inset 0 0 0 4px var(--surface); }
+.mode-option > span { display: none; }
+.accent-title { margin-top: 22px; }
+@media (max-width: 760px) {
+  .topbar-label { font-size: .74rem; }
+  .section-label, .section-label-heading, .eyebrow { font-size: .7rem; }
+}
