@@ -45,6 +45,9 @@
 .post-content em { color: var(--ink); }
 .post-content a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 .post-content code { color: var(--accent-bright); background: var(--accent-soft); border: 1px solid var(--line); padding: 2px 5px; font: var(--type-xs) var(--mono); }
+.post-figure { margin: 30px 0 34px; }
+.post-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line-strong); background: var(--surface); }
+.post-figure figcaption { margin-top: 9px; color: var(--faint); font: var(--type-xs) var(--mono); letter-spacing: .04em; line-height: 1.5; }
 .post-content pre { background: var(--surface); border: 1px solid var(--line-strong); overflow-x: auto; padding: 18px 19px; margin: 25px 0; }
 .post-content pre code { display: block; border: 0; padding: 0; background: transparent; color: var(--ink); font: var(--type-sm)/1.7 var(--mono); white-space: pre; }
 .post-content blockquote { border-left: 2px solid var(--accent); margin: 28px 0; padding: 5px 0 5px 20px; color: var(--ink); font: 500 var(--type-lg)/1.6 var(--display); }

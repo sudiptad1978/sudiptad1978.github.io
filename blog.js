@@ -82,6 +82,7 @@
     html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
     html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
     html = html.replace(/_([^_]+)_/g, '<em>$1</em>');
+    html = html.replace(/!\[([^\]]+)\]\((\/[^\s)]+|https?:\/\/[^\s)]+)\)/g, '<figure class="post-figure"><img src="$2" alt="$1" loading="lazy"><figcaption>$1</figcaption></figure>');
     html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1 ↗</a>');
     return html;
   }
@@ -204,7 +205,7 @@
       if (postList) renderPostList(posts);
       if (postContent) {
         const params = new URLSearchParams(window.location.search);
-        const fromPath = window.location.pathname.match(/^\/blog\/(.+)\/?$/);
+        const fromPath = window.location.pathname.match(/^\/blog\/([^/]+)\/?$/);
         const slug = params.get('slug') || (fromPath ? decodeURIComponent(fromPath[1]) : '');
         const post = posts.find((entry) => entry.slug === slug);
         if (!post) throw new Error('That blog post could not be found.');
