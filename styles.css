@@ -299,3 +299,144 @@ h2 span { color: var(--muted); }
   .footer { flex-direction: column; gap: 8px; padding-top: 20px; padding-bottom: 22px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+
+/* Responsive 3D tab navigation and tighter section rhythm. */
+.menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--muted);
+  padding: 8px 11px;
+  font: var(--type-xs) var(--mono);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s, transform .2s;
+}
+.menu-toggle:hover, .menu-toggle[aria-expanded="true"] { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+.menu-toggle:active { transform: translateY(1px); }
+.menu-toggle-icon { display: grid; gap: 4px; width: 16px; }
+.menu-toggle-icon i { display: block; height: 1px; width: 16px; background: currentColor; transition: transform .2s, opacity .2s; }
+.menu-toggle[aria-expanded="true"] .menu-toggle-icon i:nth-child(1) { transform: translateY(5px) rotate(45deg); }
+.menu-toggle[aria-expanded="true"] .menu-toggle-icon i:nth-child(2) { opacity: 0; }
+.menu-toggle[aria-expanded="true"] .menu-toggle-icon i:nth-child(3) { transform: translateY(-5px) rotate(-45deg); }
+.nav-links { perspective: 900px; gap: 8px; }
+.nav-link {
+  position: relative;
+  isolation: isolate;
+  min-height: 41px;
+  padding: 10px 11px 10px 13px;
+  border: 1px solid var(--line);
+  border-left: 3px solid transparent;
+  border-radius: 3px 8px 3px 3px;
+  background: linear-gradient(110deg, color-mix(in srgb, var(--surface-2) 70%, transparent), transparent 88%);
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--bg) 60%, #000 40%), 0 8px 15px rgba(0, 0, 0, .12);
+  transform: translate3d(0, 0, 0) rotateX(0deg);
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: color .2s, background .2s, border-color .2s, box-shadow .2s, transform .2s;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 8px;
+  right: -4px;
+  bottom: -4px;
+  height: 5px;
+  border-radius: 0 0 3px 3px;
+  background: color-mix(in srgb, var(--surface-3) 72%, var(--bg));
+  border: 1px solid var(--line);
+  border-top: 0;
+  transform: translateZ(-5px) skewX(-24deg);
+  opacity: .75;
+}
+.nav-link:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  border-left-color: var(--accent);
+  background: linear-gradient(110deg, var(--accent-soft), transparent 88%);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--accent-deep) 40%, var(--bg)), 0 12px 22px rgba(0, 0, 0, .18);
+  transform: translate3d(5px, -3px, 12px) rotateX(3deg);
+}
+.nav-link.active {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 55%, var(--line));
+  border-left-color: var(--accent);
+  background: linear-gradient(110deg, var(--accent-soft), var(--surface-2));
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--accent-deep) 55%, var(--bg)), 0 13px 25px rgba(0, 0, 0, .2);
+  transform: translate3d(5px, -2px, 10px) rotateX(2deg);
+}
+.nav-link:focus-visible, .menu-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* Reduce the large vertical gaps while retaining clear section separation. */
+.hero { min-height: 560px; }
+.hero-copy { padding-top: 58px; padding-bottom: 55px; }
+.intro-grid { padding-top: 68px; padding-bottom: 72px; }
+.capability-section, .stack-section, .snapshot-section { padding-top: 62px; padding-bottom: 70px; }
+.experience-section { padding-top: 62px; padding-bottom: 76px; }
+.education-section { padding-top: 62px; padding-bottom: 70px; }
+.contact-section { padding-top: 78px; padding-bottom: 82px; }
+
+@media (max-width: 760px) {
+  .rail { position: relative; z-index: 30; }
+  .menu-toggle { display: flex; position: absolute; top: 18px; right: 22px; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    overflow: visible;
+    margin-top: 0;
+    padding: 12px;
+    border-top: 0;
+    position: absolute;
+    z-index: 40;
+    top: calc(100% + 1px);
+    left: 12px;
+    right: 12px;
+    padding: 12px;
+    gap: 7px;
+    border: 1px solid var(--line-strong);
+    border-radius: 5px;
+    background: color-mix(in srgb, var(--surface) 97%, transparent);
+    box-shadow: var(--shadow), 0 8px 0 color-mix(in srgb, var(--accent-deep) 30%, var(--bg));
+    backdrop-filter: blur(16px);
+  }
+  .rail.menu-open .nav-links { display: flex; }
+  .nav-link, .nav-link:hover, .nav-link.active {
+    min-height: 42px;
+    width: 100%;
+    transform: none;
+    box-shadow: 0 2px 0 color-mix(in srgb, var(--bg) 65%, #000 35%);
+  }
+  .nav-link::after { display: none; }
+  .nav-link:hover { transform: translateX(3px); }
+  .nav-link.active { transform: translateX(3px); }
+  body.menu-open { overflow: hidden; }
+  .hero { min-height: auto; }
+  .intro-grid { padding-top: 48px; padding-bottom: 54px; }
+  .capability-section, .stack-section, .snapshot-section { padding-top: 46px; padding-bottom: 54px; }
+  .experience-section { padding-top: 46px; padding-bottom: 58px; }
+  .education-section { padding-top: 46px; padding-bottom: 54px; }
+  .contact-section { padding-top: 58px; padding-bottom: 60px; }
+  .section-label { margin-bottom: 24px; }
+  .blog-hero-title { white-space: normal; }
+}
+
+@media (max-width: 480px) {
+  .rail { padding-left: 16px; padding-right: 16px; }
+  .menu-toggle { right: 16px; }
+  .section-pad { padding-left: 16px; padding-right: 16px; }
+  .topbar-actions { gap: 7px; }
+  .text-button::after { content: 'CV'; }
+  .hero { padding-top: 42px; padding-bottom: 48px; gap: 24px; }
+  .hero-actions { align-items: stretch; flex-direction: column; gap: 10px; }
+  .primary-button, .secondary-button { justify-content: center; width: 100%; }
+  .portrait-frame { width: min(82vw, 300px); }
+  .stats-strip { grid-template-columns: 1fr 1fr; }
+  .stat > span { font-size: 10px; }
+  .blog-hero-title { font-size: 15px; }
+  .post-card-footer { gap: 12px; }
+}

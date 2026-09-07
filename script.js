@@ -9,9 +9,36 @@
   const qrCode = document.getElementById('qrCode');
   const modeOptions = [...document.querySelectorAll('.mode-option')];
   const accentOptions = [...document.querySelectorAll('.accent-option')];
+  const menuToggle = document.getElementById('menuToggle');
+  const siteNav = document.getElementById('siteNav');
+  const rail = document.querySelector('.rail');
   const prefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
   year.textContent = new Date().getFullYear();
+
+  function setMenu(open) {
+    if (!menuToggle || !siteNav || !rail) return;
+    rail.classList.toggle('menu-open', open);
+    document.body.classList.toggle('menu-open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+  }
+
+  if (menuToggle && siteNav && rail) {
+    menuToggle.addEventListener('click', () => setMenu(!rail.classList.contains('menu-open')));
+    siteNav.addEventListener('click', (event) => {
+      if (event.target.closest('.nav-link')) setMenu(false);
+    });
+    document.addEventListener('click', (event) => {
+      if (rail.classList.contains('menu-open') && !rail.contains(event.target)) setMenu(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setMenu(false);
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 760) setMenu(false);
+    });
+  }
 
   function setTheme(mode, save) {
     const effective = mode === 'system' ? (prefersDark && prefersDark.matches ? 'dark' : 'light') : mode;
@@ -231,6 +258,10 @@
     ? `${window.location.origin}${window.location.pathname}`
     : 'https://sudipta-dutta.pages.dev/';
   qrCode.innerHTML = QR.create(profileUrl);
+  qrCode.setAttribute('data-automation-id', 'profile-qr-code');
+  qrCode.querySelectorAll('*').forEach((element, index) => {
+    if (!element.hasAttribute('data-automation-id')) element.setAttribute('data-automation-id', `profile-qr-element-${index + 1}`);
+  });
   copyLink.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(profileUrl);

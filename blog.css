@@ -70,3 +70,9 @@
   .post-summary { font-size: var(--type-md); }
   .post-content { padding-top: 33px; }
 }
+
+@media (max-width: 760px) {
+  .blog-hero { padding-top: 44px; padding-bottom: 48px; }
+  .blog-list-section { padding-top: 46px; padding-bottom: 55px; }
+  .post-page { padding-top: 42px; padding-bottom: 58px; }
+}

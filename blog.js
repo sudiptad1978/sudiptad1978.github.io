@@ -11,9 +11,46 @@
   const postContent = document.getElementById('postContent');
   const postError = document.getElementById('postError');
   const year = document.getElementById('year');
+  const menuToggle = document.getElementById('menuToggle');
+  const siteNav = document.getElementById('siteNav');
+  const rail = document.querySelector('.rail');
   const prefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
   if (year) year.textContent = new Date().getFullYear();
+
+  function setMenu(open) {
+    if (!menuToggle || !siteNav || !rail) return;
+    rail.classList.toggle('menu-open', open);
+    document.body.classList.toggle('menu-open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+  }
+
+  if (menuToggle && siteNav && rail) {
+    menuToggle.addEventListener('click', () => setMenu(!rail.classList.contains('menu-open')));
+    siteNav.addEventListener('click', (event) => {
+      if (event.target.closest('.nav-link')) setMenu(false);
+    });
+    document.addEventListener('click', (event) => {
+      if (rail.classList.contains('menu-open') && !rail.contains(event.target)) setMenu(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setMenu(false);
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 760) setMenu(false);
+    });
+  }
+
+  function assignAutomationIds(root, prefix) {
+    if (!root) return;
+    if (!root.hasAttribute('data-automation-id')) root.setAttribute('data-automation-id', prefix);
+    root.querySelectorAll('*').forEach((element, index) => {
+      if (!element.hasAttribute('data-automation-id')) {
+        element.setAttribute('data-automation-id', `${prefix}-${element.tagName.toLowerCase()}-${index + 1}`);
+      }
+    });
+  }
 
   function setTheme(mode, save) {
     const effective = mode === 'system' ? (prefersDark && prefersDark.matches ? 'dark' : 'light') : mode;
@@ -177,25 +214,28 @@
   function renderPostList(posts) {
     if (!postList) return;
     postList.innerHTML = posts.map((post, index) => `
-      <a class="post-card ${index === 0 ? 'featured-post' : ''}" href="/blog/${encodeURIComponent(post.slug)}">
-        <div class="post-card-meta"><span>${escapeHtml(formatDate(post.date))}</span><span>${escapeHtml(post.readTime || 'Technical note')}</span></div>
-        <h2>${escapeHtml(post.title)}</h2>
-        <p>${escapeHtml(post.summary)}</p>
-        <div class="post-card-footer"><span>${(Array.isArray(post.tags) ? post.tags : []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</span><span class="post-arrow">Read note ↗</span></div>
+      <a class="post-card ${index === 0 ? 'featured-post' : ''}" data-automation-id="post-card-${index + 1}" href="/blog/${encodeURIComponent(post.slug)}">
+        <div class="post-card-meta" data-automation-id="post-card-meta-${index + 1}"><span>${escapeHtml(formatDate(post.date))}</span><span>${escapeHtml(post.readTime || 'Technical note')}</span></div>
+        <h2 data-automation-id="post-card-title-${index + 1}">${escapeHtml(post.title)}</h2>
+        <p data-automation-id="post-card-summary-${index + 1}">${escapeHtml(post.summary)}</p>
+        <div class="post-card-footer" data-automation-id="post-card-footer-${index + 1}"><span>${(Array.isArray(post.tags) ? post.tags : []).map((tag, tagIndex) => `<span data-automation-id="post-card-tag-${index + 1}-${tagIndex + 1}">${escapeHtml(tag)}</span>`).join('')}</span><span class="post-arrow">Read note ↗</span></div>
       </a>
     `).join('');
+    assignAutomationIds(postList, 'post-list');
   }
 
   function renderPost(post) {
     if (!postMeta || !postContent) return;
     document.title = `${post.title} — Sudipta Dutta`;
     postMeta.innerHTML = `
-      <div class="post-kicker"><span class="eyebrow-line"></span> ${escapeHtml(formatDate(post.date))} · ${escapeHtml(post.readTime || 'Technical note')}</div>
-      <h1>${escapeHtml(post.title)}</h1>
-      <p class="post-summary">${escapeHtml(post.summary)}</p>
-      <div class="post-tags">${(Array.isArray(post.tags) ? post.tags : []).map((tag) => `<span>${escapeHtml(tag)}</span>`).join('')}</div>
+      <div class="post-kicker" data-automation-id="post-kicker"><span class="eyebrow-line"></span> ${escapeHtml(formatDate(post.date))} · ${escapeHtml(post.readTime || 'Technical note')}</div>
+      <h1 data-automation-id="post-title">${escapeHtml(post.title)}</h1>
+      <p class="post-summary" data-automation-id="post-summary">${escapeHtml(post.summary)}</p>
+      <div class="post-tags" data-automation-id="post-tags">${(Array.isArray(post.tags) ? post.tags : []).map((tag, index) => `<span data-automation-id="post-tag-${index + 1}">${escapeHtml(tag)}</span>`).join('')}</div>
     `;
+    assignAutomationIds(postMeta, 'post-meta');
     postContent.innerHTML = renderMarkdown(post.content);
+    assignAutomationIds(postContent, 'post-content');
     if (postError) postError.hidden = true;
   }
 
@@ -212,7 +252,10 @@
         renderPost(post);
       }
     } catch (error) {
-      if (postList) postList.innerHTML = '<div class="blog-error">Blog notes are temporarily unavailable. Please refresh and try again.</div>';
+      if (postList) {
+        postList.innerHTML = '<div class="blog-error" data-automation-id="blog-load-error">Blog notes are temporarily unavailable. Please refresh and try again.</div>';
+        assignAutomationIds(postList, 'post-list-error');
+      }
       if (postError) { postError.hidden = false; postError.textContent = error.message; }
     }
   }
