@@ -123,6 +123,7 @@
       if (!config.enabled || typeof config.siteKey !== 'string' || !config.siteKey) return;
 
       turnstileEnabled = true;
+      if (turnstileVerification) turnstileVerification.hidden = false;
       if (turnstileContainer) turnstileContainer.hidden = false;
       setTurnstileStatus('Complete the security check before sending a message.');
       const turnstile = await loadTurnstileScript();
