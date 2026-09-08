@@ -34,8 +34,10 @@ The QR code uses the current page origin at runtime, so it follows the Cloudflar
 ├── _redirects                         # Root fallback rule
 ├── functions/api/visits.js            # Public visitor-counter Pages Function
 ├── visitor-counter.js                 # Counter display and API client
+├── chat.js                            # Portfolio assistant chat client
+├── content/assistant/knowledge.json   # Curated public assistant context
 ├── db/visitor-counter.sql             # D1 counter schema
-├── wrangler.toml                      # Cloudflare Pages and D1 config
+├── wrangler.toml                      # Cloudflare Pages, D1 and AI config
 └── .gitignore
 ```
 
@@ -366,6 +368,43 @@ curl -sS -b /tmp/portfolio-counter.cookies \
 ```
 
 The first response should report `counted: true`; the second request with the same cookie should report `counted: false` and the same total.
+
+## AI portfolio assistant
+
+The homepage includes a styled, accessible chat panel named **Ask the portfolio assistant**. It answers questions about the public portfolio, capabilities, experience, GitHub projects, articles and booking link.
+
+### Architecture
+
+```text
+Chat panel → POST /api/chat Pages Function → Workers AI
+                                      ↘ curated knowledge.json
+```
+
+Relevant files:
+
+- `chat.js` — chat modal, quick prompts, loading state and same-origin API client.
+- `functions/api/chat.js` — validates requests, applies a small in-memory rate limit and honeypot check, calls Workers AI and returns a no-cache response.
+- `content/assistant/knowledge.json` — the public facts the assistant is allowed to use.
+- `wrangler.toml` — binds the Pages project to Workers AI as `AI`.
+
+The first release deliberately uses a curated context instead of a vector database. This keeps answers auditable and avoids making unsupported claims. The assistant is instructed to say when the portfolio does not contain an answer rather than inventing one.
+
+### Safety and privacy behavior
+
+- No chat history is persisted by the portfolio.
+- The browser sends only the current short conversation to the same-origin Function.
+- Requests are limited by message count and size.
+- A honeypot field and lightweight per-isolate rate limit reduce simple automated abuse.
+- The assistant must not invent employers, dates, certifications, salary information, metrics or responsibilities.
+- Provider keys are not placed in HTML or client-side JavaScript.
+
+### Update the assistant context
+
+Edit `content/assistant/knowledge.json` when a public portfolio fact changes. Keep the context limited to information that is already intended for public display. Run the JavaScript checks and deploy from the repository root so Wrangler compiles both `functions/api/chat.js` and the `AI` binding.
+
+### Future retrieval upgrade
+
+If the assistant later needs to search the full blog and resume corpus, add embeddings and Cloudflare Vectorize rather than putting the entire site into every prompt. Keep the curated context as the source of truth for contact and booking links.
 
 ## Cal.com booking
 

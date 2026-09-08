@@ -257,11 +257,47 @@
         </section>
       </div>
 
+      <button class="ai-chat-launcher" id="aiChatLaunch" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="aiChatModal" data-automation-id="ai-chat-launcher"><span class="ai-chat-launcher-dot" aria-hidden="true"></span> Ask the portfolio assistant <span aria-hidden="true">↗</span></button>
+
+      <div class="ai-chat-modal" id="aiChatModal" hidden>
+        <div class="ai-chat-backdrop" data-chat-close></div>
+        <section class="ai-chat-dialog" role="dialog" aria-modal="true" aria-labelledby="aiChatTitle" aria-describedby="aiChatDescription">
+          <div class="ai-chat-header">
+            <div>
+              <div class="eyebrow">AI PORTFOLIO ASSISTANT</div>
+              <h2 id="aiChatTitle">Ask about Sudipta’s work.</h2>
+              <p id="aiChatDescription">Ask about quality engineering, automation, projects or booking a conversation. Answers are based on this public portfolio.</p>
+            </div>
+            <button class="ai-chat-close" id="aiChatClose" type="button" aria-label="Close portfolio assistant">×</button>
+          </div>
+          <div class="ai-chat-messages" id="aiChatMessages" role="log" aria-live="polite" aria-label="Portfolio assistant conversation">
+            <div class="ai-chat-message ai-chat-message-assistant" role="status">
+              <span class="ai-chat-message-label">Assistant</span>
+              <p class="ai-chat-message-content">Hi. I can help you explore Sudipta’s experience, capabilities, projects and booking link.</p>
+            </div>
+          </div>
+          <div class="ai-chat-prompts" aria-label="Suggested questions">
+            <button type="button" data-chat-prompt="What does Sudipta specialize in?">What does he specialize in?</button>
+            <button type="button" data-chat-prompt="Show me the GitHub projects.">Show the projects</button>
+            <button type="button" data-chat-prompt="How can I book a call?">Book a call</button>
+          </div>
+          <form class="ai-chat-form" id="aiChatForm">
+            <label class="sr-only" for="aiChatInput">Ask the portfolio assistant</label>
+            <input id="aiChatInput" name="message" type="text" maxlength="1200" autocomplete="off" placeholder="Ask a question…" required>
+            <input class="ai-chat-honeypot" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <button class="ai-chat-submit" id="aiChatSubmit" type="submit">Send</button>
+          </form>
+          <p class="ai-chat-status" id="aiChatStatus" role="status" aria-live="polite"></p>
+          <p class="ai-chat-note">Public portfolio information only. No conversation history is stored.</p>
+        </section>
+      </div>
+
       <div id="toast" class="toast" role="status" aria-live="polite" hidden data-automation-id="profile-toast"></div>
       <footer class="footer section-pad" data-automation-id="element-footer-1"><span data-automation-id="element-span-133">© <span id="year" data-automation-id="element-year-134">2026</span> Sudipta Dutta</span><span class="footer-visitor-count" data-visitor-counter hidden aria-live="polite"><span class="footer-visitor-label">Portfolio visits</span><strong data-visitor-total>—</strong></span><span data-automation-id="element-span-135">Designed for quality-minded teams <span class="footer-dot" data-automation-id="element-footer-dot-136">◆</span></span><a href="#top" data-automation-id="element-a-16">Back to top ↑</a></footer>
     </main>
   </div>
   <script src="/visitor-counter.js" defer data-automation-id="visitor-counter-script"></script>
+  <script src="/chat.js" defer data-automation-id="ai-chat-script"></script>
   <script src="script.js" data-automation-id="element-script-1"></script>
 </body>
 </html>

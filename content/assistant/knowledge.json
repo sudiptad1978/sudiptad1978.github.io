@@ -1,0 +1,96 @@
+{
+  "assistantName": "Sudipta's Portfolio Assistant",
+  "profile": {
+    "name": "Sudipta Dutta",
+    "title": "Quality Engineering Leader, QA Manager and Test Automation Architect",
+    "location": "Stockholm, Sweden",
+    "summary": "Sudipta designs test automation frameworks and AI-augmented quality engineering workflows that help teams release with confidence.",
+    "focus": [
+      "Quality engineering leadership",
+      "Test automation architecture",
+      "Mobile testing",
+      "API reliability",
+      "CI/CD quality gates",
+      "AI-augmented QA workflows",
+      "Security-focused testing"
+    ]
+  },
+  "capabilities": [
+    "Playwright",
+    "Selenium",
+    "Appium",
+    "Maestro",
+    "Java",
+    "Python",
+    "TypeScript",
+    "Jenkins",
+    "GitHub Actions",
+    "Docker",
+    "AWS",
+    "Kubernetes",
+    "REST Assured",
+    "Postman",
+    "Burp Suite",
+    "Claude Code",
+    "MCP",
+    "n8n"
+  ],
+  "experience": [
+    {
+      "company": "Nextory",
+      "role": "Senior Test Automation Engineer",
+      "summary": "Leading test architecture and quality engineering for a mobile streaming platform across iOS, Android and backend APIs."
+    },
+    {
+      "company": "Aparna",
+      "role": "Founder and Principal QA Consultant",
+      "summary": "Running a specialised Quality Engineering consultancy that modernises testing infrastructure and makes quality measurable."
+    },
+    {
+      "company": "Atea Sverige, client: Axis Communications",
+      "role": "Test Leader",
+      "summary": "Owned quality strategy for enterprise Identity and Access Management solutions supporting secure global deployments."
+    },
+    {
+      "company": "Opera Software",
+      "role": "QA Manager",
+      "summary": "Directed risk-based quality strategy for an omnichannel payment platform."
+    }
+  ],
+  "projects": [
+    {
+      "name": "appium-python-framework",
+      "url": "https://github.com/sudiptad1978/appium-python-framework",
+      "summary": "Production-ready Appium 2.x mobile test automation framework for Android and iOS."
+    },
+    {
+      "name": "n8n-101",
+      "url": "https://github.com/sudiptad1978/n8n-101",
+      "summary": "n8n masterclass and deployment template for practical workflow automation."
+    },
+    {
+      "name": "sudiptad1978.github.io",
+      "url": "https://github.com/sudiptad1978/sudiptad1978.github.io",
+      "summary": "The source for this quality engineering portfolio, published through GitHub and Cloudflare Pages."
+    }
+  ],
+  "articles": [
+    "Vibe Coding Prompts: The Exact Prompt for Every Stage of the Build",
+    "Maestro Mobile Automation: A Practical Step-by-Step Guide",
+    "Shift-Left API Testing Without Slowing Teams Down",
+    "Quality Gates That Help Teams Ship",
+    "Using Claude Code as a Test Automation Pair Programmer"
+  ],
+  "contact": {
+    "booking": "https://cal.com/sudipta-dutta/15min",
+    "email": "deep.sudipta@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/duttasudipta"
+  },
+  "answerPolicy": [
+    "Use only the information in this knowledge file.",
+    "Do not invent employers, dates, certifications, salary information, performance metrics or responsibilities.",
+    "If the answer is not covered, say that the portfolio does not provide enough information and offer the contact or booking link.",
+    "Do not claim to be Sudipta or speak for him outside the public portfolio information.",
+    "Keep answers concise, professional and useful."
+  ]
+}

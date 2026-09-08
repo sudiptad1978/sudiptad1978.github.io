@@ -6,3 +6,6 @@ pages_build_output_dir = "."
 binding = "VISITOR_COUNTER_DB"
 database_name = "sudipta-portfolio-visitor-counter"
 database_id = "f9cee238-024d-4335-9440-02121ec48066"
+
+[ai]
+binding = "AI"
