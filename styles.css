@@ -683,3 +683,19 @@ h2 span { color: var(--muted); }
   .hero { align-items: stretch; }
   .hero-copy { padding-top: 0; padding-bottom: 0; }
 }
+
+/* Copy and proof-point hierarchy pass. */
+.hero-proof { display: flex; flex-wrap: wrap; gap: 26px; align-items: flex-start; max-width: 470px; margin-top: 28px; padding-top: 19px; border-top: 1px solid var(--line); }
+.hero-proof-stat { display: flex; flex-direction: column; gap: 4px; min-width: 135px; }
+.hero-proof-stat strong { color: var(--ink); font: 700 clamp(2.55rem, 4.4vw, 4rem)/.9 var(--display); letter-spacing: -.08em; }
+.hero-proof-stat strong span { color: var(--accent); font-size: .56em; }
+.hero-proof-stat > span { color: var(--muted); font: 500 .72rem/1.35 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.stats-strip-secondary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.stats-strip-secondary .stat { padding-top: 26px; padding-bottom: 28px; }
+.stats-strip-secondary .stat:last-child { border-right: 0; }
+@media (max-width: 760px) {
+  .hero-proof { gap: 19px; margin-top: 23px; padding-top: 16px; }
+  .hero-proof-stat { min-width: 116px; }
+  .hero-proof-stat strong { font-size: clamp(2.35rem, 10vw, 3.25rem); }
+  .stats-strip-secondary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
