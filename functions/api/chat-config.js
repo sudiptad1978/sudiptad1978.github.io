@@ -12,7 +12,7 @@ function json(data, init = {}) {
 
 export function onRequestGet({ env }) {
   const siteKey = typeof env.TURNSTILE_SITE_KEY === 'string' ? env.TURNSTILE_SITE_KEY.trim() : '';
-  const secretKey = typeof env.TURNSTILE_SECRET_KEY === 'string' ? env.TURNSTILE_SECRET_KEY.trim() : '';
+  const secretKey = typeof env.TURNSTILE_SECRET === 'string' ? env.TURNSTILE_SECRET.trim() : '';
   return json({
     enabled: Boolean(siteKey && secretKey),
     siteKey: siteKey || null

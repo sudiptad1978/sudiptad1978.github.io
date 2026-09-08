@@ -406,14 +406,9 @@ Edit `content/assistant/knowledge.json` when a public portfolio fact changes. Ke
 
 ### Enable Turnstile
 
-Create a Managed Turnstile widget for `sudipta-dutta-portfolio.pages.dev` in the Cloudflare dashboard, then configure the values as Pages secrets. The site key is returned to the browser by `/api/chat-config`; the secret is used only by the server-side verification request.
+Create a Managed Turnstile widget for `sudipta-dutta-portfolio.pages.dev` in the Cloudflare dashboard. The public site key is stored as a Pages variable in `wrangler.toml`; add the private secret as a production Pages secret named `TURNSTILE_SECRET`. The site key is returned to the browser by `/api/chat-config`; the secret is used only by the server-side siteverify request.
 
-```bash
-npx wrangler pages secret put TURNSTILE_SITE_KEY --project-name sudipta-dutta-portfolio
-npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name sudipta-dutta-portfolio
-```
-
-The chat continues to work without the values, which keeps local development and an unconfigured deployment usable. Once both are present, reload the chat panel to render Turnstile and require a valid token for every request. Never commit either value or place the secret in browser code.
+The chat continues to work without the secret, which keeps local development and an unconfigured deployment usable. Once `TURNSTILE_SECRET` is present, reload the chat panel to render Turnstile and require a valid token with the `portfolio_chat` action and expected production hostname. Never commit the secret or place it in browser code.
 
 ### Future retrieval upgrade
 

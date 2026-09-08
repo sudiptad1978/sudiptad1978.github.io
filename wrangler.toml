@@ -9,3 +9,7 @@ database_id = "f9cee238-024d-4335-9440-02121ec48066"
 
 [ai]
 binding = "AI"
+
+[vars]
+TURNSTILE_SITE_KEY = "0x4AAAAAAEs8dW4YLfHATeyl"
+TURNSTILE_HOSTNAMES = "sudipta-dutta-portfolio.pages.dev"

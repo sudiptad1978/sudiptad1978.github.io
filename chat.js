@@ -112,6 +112,7 @@
       const turnstile = await loadTurnstileScript();
       turnstileWidget = turnstile.render(turnstileContainer, {
         sitekey: config.siteKey,
+        action: 'portfolio_chat',
         theme: document.body.dataset.theme === 'light' ? 'light' : 'dark',
         callback: (token) => {
           turnstileToken = token;

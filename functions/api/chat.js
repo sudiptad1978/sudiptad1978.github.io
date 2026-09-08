@@ -4,7 +4,9 @@ const MAX_BODY_BYTES = 12_000;
 const MAX_MESSAGES = 8;
 const MAX_MESSAGE_CHARS = 1_200;
 const MAX_TOTAL_CHARS = 4_800;
-const MAX_TURNSTILE_TOKEN_CHARS = 4_096;
+const MAX_TURNSTILE_TOKEN_CHARS = 2_048;
+const TURNSTILE_ACTION = 'portfolio_chat';
+const DEFAULT_TURNSTILE_HOSTNAME = 'sudipta-dutta-portfolio.pages.dev';
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 10;
 const requestLog = new Map();
@@ -67,7 +69,7 @@ function normalizeMessages(messages) {
   return normalized;
 }
 
-async function verifyTurnstile(request, token, secret) {
+async function verifyTurnstile(request, token, secret, expectedHostnames) {
   const fields = new URLSearchParams({ secret, response: token });
   const clientIp = request.headers.get('CF-Connecting-IP');
   if (clientIp) fields.set('remoteip', clientIp);
@@ -75,11 +77,15 @@ async function verifyTurnstile(request, token, secret) {
     const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
       method: 'POST',
       headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      signal: AbortSignal.timeout(10_000),
       body: fields
     });
     if (!response.ok) return false;
     const result = await response.json();
-    return result?.success === true;
+    return result?.success === true
+      && result?.action === TURNSTILE_ACTION
+      && typeof result?.hostname === 'string'
+      && expectedHostnames.has(result.hostname);
   } catch {
     return false;
   }
@@ -128,13 +134,17 @@ export async function onRequestPost({ request, env }) {
   // Honeypot field for simple automated submissions. It is never shown to users.
   if (typeof body.website === 'string' && body.website.trim()) return json({ error: 'Invalid request.' }, { status: 400 });
 
-  const turnstileSecret = typeof env.TURNSTILE_SECRET_KEY === 'string' ? env.TURNSTILE_SECRET_KEY.trim() : '';
+  const turnstileSecret = typeof env.TURNSTILE_SECRET === 'string' ? env.TURNSTILE_SECRET.trim() : '';
   if (turnstileSecret) {
     const turnstileToken = typeof body.turnstileToken === 'string' ? body.turnstileToken.trim() : '';
     if (!turnstileToken || turnstileToken.length > MAX_TURNSTILE_TOKEN_CHARS) {
       return json({ error: 'Please complete the security check.' }, { status: 400 });
     }
-    if (!(await verifyTurnstile(request, turnstileToken, turnstileSecret))) {
+    const configuredHostnames = typeof env.TURNSTILE_HOSTNAMES === 'string'
+      ? env.TURNSTILE_HOSTNAMES.split(',').map((hostname) => hostname.trim()).filter(Boolean)
+      : [];
+    const expectedHostnames = new Set(configuredHostnames.length ? configuredHostnames : [DEFAULT_TURNSTILE_HOSTNAME]);
+    if (!(await verifyTurnstile(request, turnstileToken, turnstileSecret, expectedHostnames))) {
       return json({ error: 'Security check failed.' }, { status: 403 });
     }
   }
