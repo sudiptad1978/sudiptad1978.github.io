@@ -1,0 +1,23 @@
+# Sudipta Dutta — Quality Engineering Portfolio
+
+> Portfolio of Sudipta Dutta, a Quality Engineering Leader, QA Manager and Test Automation Architect based in Stockholm, Sweden.
+
+## Portfolio
+
+- [Homepage](https://sudipta-dutta-portfolio.pages.dev/): Professional profile, capabilities, experience, education and contact details.
+- [Resume](https://sudipta-dutta-portfolio.pages.dev/resume.pdf): Downloadable four-page resume.
+- [GitHub projects](https://sudipta-dutta-portfolio.pages.dev/#projects): Selected repositories covering mobile automation, n8n workflows and quality engineering systems.
+
+## Blog
+
+- [Technical notes](https://sudipta-dutta-portfolio.pages.dev/blog/): Quality engineering, test automation, mobile testing, API reliability and delivery systems.
+- [Vibe Coding Prompts](https://sudipta-dutta-portfolio.pages.dev/blog/vibe-coding-prompts/): A 15-stage prompt playbook for AI-assisted product engineering.
+- [Using Claude Code as a Test Automation Pair Programmer](https://sudipta-dutta-portfolio.pages.dev/blog/using-claude-code-test-automation/): A workflow for Claude Code, Playwright and MCP in test automation.
+- [Maestro Mobile Automation](https://sudipta-dutta-portfolio.pages.dev/blog/maestro-mobile-testing/): A practical guide to readable mobile test flows and CI feedback.
+- [Shift-Left API Testing](https://sudipta-dutta-portfolio.pages.dev/blog/shift-left-api-testing/): Contract-focused API checks and faster feedback loops.
+- [Quality Gates That Help Teams Ship](https://sudipta-dutta-portfolio.pages.dev/blog/quality-gates-that-help-teams-ship/): Quality gates that create confidence without becoming delivery bottlenecks.
+
+## Contact
+
+- [LinkedIn](https://www.linkedin.com/in/duttasudipta): Sudipta Dutta's professional profile.
+- [Email](mailto:deep.sudipta@gmail.com): Contact Sudipta Dutta by email.
