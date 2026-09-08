@@ -82,6 +82,21 @@
     return new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date(`${date}T12:00:00`));
   }
 
+  function updateCarouselControls() {
+    if (!blogCarousel) return;
+    const maximumScroll = Math.max(0, blogCarousel.scrollWidth - blogCarousel.clientWidth);
+    const atStart = blogCarousel.scrollLeft <= 2;
+    const atEnd = blogCarousel.scrollLeft >= maximumScroll - 2;
+    if (blogCarouselPrevious) {
+      blogCarouselPrevious.disabled = atStart;
+      blogCarouselPrevious.setAttribute('aria-disabled', String(atStart));
+    }
+    if (blogCarouselNext) {
+      blogCarouselNext.disabled = atEnd;
+      blogCarouselNext.setAttribute('aria-disabled', String(atEnd));
+    }
+  }
+
   function renderPortfolioBlog(posts) {
     if (!blogCarousel) return;
     blogCarousel.innerHTML = posts.map((post, index) => `
@@ -95,6 +110,7 @@
     blogCarousel.querySelectorAll('*').forEach((element, index) => {
       if (!element.hasAttribute('data-automation-id')) element.setAttribute('data-automation-id', `portfolio-blog-element-${index + 1}`);
     });
+    updateCarouselControls();
   }
 
   async function loadPortfolioBlog() {
@@ -118,10 +134,13 @@
     const scrollCarousel = (direction) => blogCarousel.scrollBy({ left: direction * Math.max(blogCarousel.clientWidth * .82, 290), behavior: 'smooth' });
     if (blogCarouselPrevious) blogCarouselPrevious.addEventListener('click', () => scrollCarousel(-1));
     if (blogCarouselNext) blogCarouselNext.addEventListener('click', () => scrollCarousel(1));
+    blogCarousel.addEventListener('scroll', updateCarouselControls, { passive: true });
     blogCarousel.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft') { event.preventDefault(); scrollCarousel(-1); }
       if (event.key === 'ArrowRight') { event.preventDefault(); scrollCarousel(1); }
     });
+    window.addEventListener('resize', updateCarouselControls);
+    updateCarouselControls();
     loadPortfolioBlog();
   }
 

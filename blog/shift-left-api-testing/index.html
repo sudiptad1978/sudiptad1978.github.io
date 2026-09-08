@@ -69,8 +69,31 @@
 
       <section class="post-page section-pad" data-automation-id="element-post-page-1">
         <a class="back-to-blog" href="/blog" data-automation-id="element-back-to-blog-11">← Back to all notes</a>
-        <div id="postMeta" class="post-meta" aria-live="polite" data-automation-id="element-postmeta-15"></div>
-        <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1"><div class="blog-loading" data-automation-id="element-blog-loading-16">Loading note…</div></article>
+        <div id="postMeta" class="post-meta" aria-live="polite" data-automation-id="element-postmeta-15" data-static-post="true">
+          <div class="post-kicker" data-automation-id="post-kicker"><span class="eyebrow-line"></span> 22 Aug 2026 · 7 min read</div>
+          <h1 data-automation-id="post-title">Shift-Left API Testing Without Slowing Teams Down</h1>
+          <p class="post-summary" data-automation-id="post-summary">How contract-focused API checks can shorten feedback loops while protecting integration quality.</p>
+          <div class="post-tags" data-automation-id="post-tags"><span data-automation-id="post-tag-1">API</span><span data-automation-id="post-tag-2">CI/CD</span><span data-automation-id="post-tag-3">Shift-left</span></div>
+        </div>
+        <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1" data-static-post-content="true">
+          <h2>Shift-left is about feedback, not moving a test earlier</h2>
+<p>Moving a long end-to-end suite into a pull request does not automatically create a shift-left culture. The useful question is: what is the earliest point at which a meaningful signal can be produced?</p>
+<p>For APIs, that signal usually starts with the contract. A consumer should know quickly when a response shape, authorization rule or error behaviour changes unexpectedly.</p>
+<h2>A layered API quality model</h2>
+<p>A practical API suite usually has several layers:</p>
+<ol><li><strong>Schema and contract checks</strong> validate the shape of requests and responses.</li><li><strong>Component checks</strong> exercise service logic with controlled dependencies.</li><li><strong>Integration checks</strong> validate real boundaries such as identity, queues and databases.</li><li><strong>Journey checks</strong> cover the few business flows that cross multiple services.</li></ol>
+<p>Each layer answers a different question. Keeping them separate prevents every change from requiring the slowest and most expensive test.</p>
+<h2>Make failures useful</h2>
+<p>A failed request should tell the team what changed, which contract was expected and whether the failure is deterministic. Include request correlation IDs, sanitized payloads, response status and the environment under test.</p>
+<p>Avoid dumping secrets into logs. Authentication tokens, recovery codes and customer data should be masked at the test framework boundary, not after a log has already been emitted.</p>
+<h2>Quality gates that teams trust</h2>
+<p>A good pull-request gate is fast, deterministic and owned by the engineering team. A longer suite can run after merge or before release, but it should not be the only signal available to a developer.</p>
+<p>Useful gates include:</p>
+<ul><li>Contract compatibility against the supported API versions.</li><li>Authentication and authorization checks for the changed surface.</li><li>A focused regression pack for high-risk endpoints.</li><li>Static security checks and dependency scanning.</li><li>A clear report that links failures to the owning service.</li></ul>
+<h2>The outcome</h2>
+<p>Shift-left API testing works when it reduces uncertainty without creating noise. Start with a small set of high-value contracts, make failures actionable and grow coverage from observed risk rather than a percentage target.</p>
+        </article>
+
         <div id="postError" class="blog-error" hidden data-automation-id="element-posterror-17"></div>
       </section>
 

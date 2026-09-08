@@ -69,8 +69,30 @@
 
       <section class="post-page section-pad" data-automation-id="element-post-page-1">
         <a class="back-to-blog" href="/blog" data-automation-id="element-back-to-blog-11">← Back to all notes</a>
-        <div id="postMeta" class="post-meta" aria-live="polite" data-automation-id="element-postmeta-15"></div>
-        <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1"><div class="blog-loading" data-automation-id="element-blog-loading-16">Loading note…</div></article>
+        <div id="postMeta" class="post-meta" aria-live="polite" data-automation-id="element-postmeta-15" data-static-post="true">
+          <div class="post-kicker" data-automation-id="post-kicker"><span class="eyebrow-line"></span> 04 Aug 2026 · 5 min read</div>
+          <h1 data-automation-id="post-title">Quality Gates That Help Teams Ship</h1>
+          <p class="post-summary" data-automation-id="post-summary">A quality gate should create confidence at the right moment, not become a final-stage bottleneck.</p>
+          <div class="post-tags" data-automation-id="post-tags"><span data-automation-id="post-tag-1">Quality Engineering</span><span data-automation-id="post-tag-2">Leadership</span><span data-automation-id="post-tag-3">CI/CD</span></div>
+        </div>
+        <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1" data-static-post-content="true">
+          <h2>A gate is a decision aid</h2>
+<p>A quality gate is valuable when it helps a team decide whether a change is ready to move forward. It becomes harmful when it is a ritual that produces a red or green result without explaining the risk behind it.</p>
+<p>The most useful gates combine automated evidence, risk context and a clear owner for the decision.</p>
+<h2>Separate signal from ceremony</h2>
+<p>Not every check belongs on every pull request. Fast checks should answer whether the change is structurally safe to merge. Broader regression, performance and exploratory testing can run on a different cadence where they have enough time and environment fidelity to produce a reliable signal.</p>
+<p>A simple model is:</p>
+<ul><li><strong>Pull request:</strong> linting, unit tests, contract checks and focused security validation.</li><li><strong>Continuous integration:</strong> service integration, smoke and targeted regression.</li><li><strong>Release candidate:</strong> cross-system regression, performance and supported-device validation.</li><li><strong>Production:</strong> monitoring, synthetic journeys and rollback readiness.</li></ul>
+<h2>Measure confidence, not activity</h2>
+<p>Test case counts and execution totals are useful operational measures, but they are not quality by themselves. Pair them with escaped defects, flaky-test rate, mean time to diagnose and release rollback frequency.</p>
+<p>When the numbers disagree, investigate. A high pass rate with increasing escaped defects is a signal that the suite may be checking the wrong risks.</p>
+<h2>A gate should have an exit</h2>
+<p>Every quality gate needs a documented failure path. Define who triages the failure, what evidence is required to waive it, how the waiver expires and how the underlying problem will be fixed.</p>
+<p>This keeps quality governance from becoming a permanent exception process.</p>
+<h2>Final thought</h2>
+<p>The strongest quality gates make the safe path the easiest path. They shorten feedback loops, expose risk early and give teams enough context to make a confident release decision.</p>
+        </article>
+
         <div id="postError" class="blog-error" hidden data-automation-id="element-posterror-17"></div>
       </section>
 

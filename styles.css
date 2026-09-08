@@ -457,7 +457,8 @@ h2 span { color: var(--muted); }
 .portfolio-blog-heading p { max-width: 560px; color: var(--muted); font-size: var(--type-md); line-height: 1.65; margin: 0; }
 .carousel-controls { display: flex; gap: 7px; flex: none; }
 .carousel-control { width: 38px; height: 38px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--line-strong); border-radius: 3px; color: var(--muted); background: var(--surface); cursor: pointer; font: 18px/1 var(--mono); transition: color .2s, border-color .2s, background .2s, transform .2s; }
-.carousel-control:hover { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); transform: translateY(-2px); }
+.carousel-control:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); transform: translateY(-2px); }
+.carousel-control:disabled { color: var(--faint); border-color: var(--line); background: var(--surface-2); cursor: not-allowed; opacity: .58; }
 .carousel-control:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .portfolio-blog-carousel { display: flex; gap: 13px; overflow-x: auto; padding: 3px 4px 17px 1px; scroll-behavior: smooth; scroll-snap-type: x mandatory; scrollbar-color: var(--accent-deep) var(--surface-2); scrollbar-width: thin; }
 .portfolio-blog-card { flex: 0 0 clamp(265px, 30vw, 335px); min-height: 237px; display: flex; flex-direction: column; padding: 21px 21px 18px; scroll-snap-align: start; border: 1px solid var(--line); background: linear-gradient(145deg, var(--surface), var(--surface-2)); transition: transform .2s, border-color .2s, box-shadow .2s, background .2s; }
