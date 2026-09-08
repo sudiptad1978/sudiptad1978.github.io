@@ -425,12 +425,14 @@
   const profileUrl = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
     ? `${window.location.origin}${window.location.pathname}`
     : 'https://sudipta-dutta.pages.dev/';
-  qrCode.innerHTML = QR.create(profileUrl);
+  const qrImage = document.createElement('img');
+  qrImage.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(QR.create(profileUrl))}`;
+  qrImage.alt = '';
+  qrImage.setAttribute('aria-hidden', 'true');
+  qrImage.decoding = 'async';
+  qrCode.replaceChildren(qrImage);
   qrCode.setAttribute('data-automation-id', 'profile-qr-code');
   qrCode.setAttribute('data-qr-value', profileUrl);
-  qrCode.querySelectorAll('*').forEach((element, index) => {
-    if (!element.hasAttribute('data-automation-id')) element.setAttribute('data-automation-id', `profile-qr-element-${index + 1}`);
-  });
   let toastTimer;
   function showToast(message) {
     if (!toast) return;
