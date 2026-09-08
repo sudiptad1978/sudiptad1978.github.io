@@ -29,6 +29,7 @@
 
 .skip-link { position: fixed; z-index: 1000; top: 12px; left: 12px; transform: translateY(-180%); padding: 10px 14px; border: 1px solid var(--accent); background: var(--surface); color: var(--ink); font: var(--type-xs) var(--mono); letter-spacing: .04em; transition: transform .2s ease; }
 .skip-link:focus { transform: translateY(0); outline: 2px solid var(--accent); outline-offset: 3px; }
+.contact-topbar-button { font-size: var(--type-xs); }
 
 body[data-theme="light"] {
   --bg: #f4f7f5;
@@ -736,3 +737,8 @@ h2 span { color: var(--muted); }
 .ai-capability h3 { color: var(--ink); }
 .ai-capability:hover { background: linear-gradient(115deg, color-mix(in srgb, var(--accent-soft) 90%, var(--surface)), var(--surface-2) 68%); }
 @media (max-width: 760px) { .ai-capability { grid-column: span 1; } }
+
+@media (max-width: 760px) {
+  .text-button.contact-topbar-button { font-size: var(--type-xs); }
+  .text-button.contact-topbar-button::after { content: none; }
+}
