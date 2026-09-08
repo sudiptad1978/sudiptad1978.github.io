@@ -114,7 +114,8 @@
       turnstileWidget = turnstile.render(turnstileContainer, {
         sitekey: config.siteKey,
         action: 'portfolio_chat',
-        size: window.matchMedia('(max-width: 760px)').matches ? 'compact' : 'normal',
+        size: 'normal',
+        appearance: 'always',
         theme: document.body.dataset.theme === 'light' ? 'light' : 'dark',
         callback: (token) => {
           turnstileToken = token;
