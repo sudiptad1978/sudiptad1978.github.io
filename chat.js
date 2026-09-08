@@ -11,10 +11,17 @@
   const quickPrompts = [...document.querySelectorAll('[data-chat-prompt]')];
   const submitButton = document.getElementById('aiChatSubmit');
   const status = document.getElementById('aiChatStatus');
+  const turnstileContainer = document.getElementById('aiChatTurnstile');
+  const turnstileStatus = document.getElementById('aiChatTurnstileStatus');
   if (!modal || !launchButton || !closeButton || !form || !input || !messagesElement || !submitButton) return;
 
   const conversation = [];
   let lastTrigger = launchButton;
+  let turnstileInitPromise = null;
+  let turnstileScriptPromise = null;
+  let turnstileEnabled = false;
+  let turnstileWidget = null;
+  let turnstileToken = '';
 
   function appendTextWithLinks(element, text) {
     const urlPattern = /(https:\/\/(?:cal\.com|github\.com|www\.linkedin\.com)\/[^\s)]+)/g;
@@ -52,8 +59,10 @@
     modal.hidden = !open;
     document.body.classList.toggle('ai-chat-open', open);
     launchButton.setAttribute('aria-expanded', String(open));
-    if (open) window.setTimeout(() => input.focus(), 0);
-    else lastTrigger?.focus();
+    if (open) {
+      window.setTimeout(() => input.focus(), 0);
+      initializeTurnstile();
+    } else lastTrigger?.focus();
   }
 
   function setBusy(busy) {
@@ -64,9 +73,74 @@
     status.textContent = busy ? 'The assistant is preparing a response.' : '';
   }
 
+  function setTurnstileStatus(message) {
+    if (turnstileStatus) turnstileStatus.textContent = message;
+  }
+
+  function loadTurnstileScript() {
+    if (window.turnstile) return Promise.resolve(window.turnstile);
+    if (turnstileScriptPromise) return turnstileScriptPromise;
+    turnstileScriptPromise = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+      script.async = true;
+      script.defer = true;
+      script.dataset.turnstileApi = 'true';
+      script.onload = () => window.turnstile ? resolve(window.turnstile) : reject(new Error('Turnstile did not load.'));
+      script.onerror = () => reject(new Error('Turnstile could not load.'));
+      document.head.appendChild(script);
+    });
+    return turnstileScriptPromise;
+  }
+
+  async function initializeTurnstile() {
+    if (turnstileInitPromise) return turnstileInitPromise;
+    turnstileInitPromise = (async () => {
+      const response = await fetch('/api/chat-config', {
+        method: 'GET',
+        cache: 'no-store',
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' }
+      });
+      if (!response.ok) return;
+      const config = await response.json();
+      if (!config.enabled || typeof config.siteKey !== 'string' || !config.siteKey) return;
+
+      turnstileEnabled = true;
+      if (turnstileContainer) turnstileContainer.hidden = false;
+      setTurnstileStatus('Complete the security check before sending a message.');
+      const turnstile = await loadTurnstileScript();
+      turnstileWidget = turnstile.render(turnstileContainer, {
+        sitekey: config.siteKey,
+        theme: document.body.dataset.theme === 'light' ? 'light' : 'dark',
+        callback: (token) => {
+          turnstileToken = token;
+          setTurnstileStatus('Security check complete.');
+        },
+        'expired-callback': () => {
+          turnstileToken = '';
+          setTurnstileStatus('The security check expired. Please complete it again.');
+        },
+        'error-callback': () => {
+          turnstileToken = '';
+          setTurnstileStatus('The security check could not be completed. Please try again.');
+        }
+      });
+    })().catch(() => {
+      if (turnstileEnabled) setTurnstileStatus('The security check could not be loaded. Please try again.');
+    });
+    return turnstileInitPromise;
+  }
+
   async function submitMessage(text) {
     const message = text.trim();
     if (!message || submitButton.disabled) return;
+    await initializeTurnstile();
+    if (turnstileEnabled && !turnstileToken) {
+      setTurnstileStatus('Complete the security check before sending a message.');
+      return;
+    }
+
     input.value = '';
     addMessage('user', message);
     conversation.push({ role: 'user', content: message });
@@ -77,7 +151,11 @@
         cache: 'no-store',
         credentials: 'same-origin',
         headers: { 'content-type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ messages: conversation, website: '' })
+        body: JSON.stringify({
+          messages: conversation,
+          website: '',
+          ...(turnstileEnabled ? { turnstileToken } : {})
+        })
       });
       const data = await response.json();
       if (!response.ok || typeof data.reply !== 'string') throw new Error(data.error || 'Assistant unavailable.');
@@ -86,6 +164,11 @@
     } catch (error) {
       addMessage('assistant', 'I am temporarily unavailable. You can use the Book a 1:1 Call button or contact Sudipta directly.');
     } finally {
+      if (turnstileEnabled && window.turnstile && turnstileWidget !== null) {
+        window.turnstile.reset(turnstileWidget);
+        turnstileToken = '';
+        setTurnstileStatus('Complete the security check to send another message.');
+      }
       setBusy(false);
       input.focus();
     }

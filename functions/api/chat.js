@@ -4,6 +4,7 @@ const MAX_BODY_BYTES = 12_000;
 const MAX_MESSAGES = 8;
 const MAX_MESSAGE_CHARS = 1_200;
 const MAX_TOTAL_CHARS = 4_800;
+const MAX_TURNSTILE_TOKEN_CHARS = 4_096;
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 10;
 const requestLog = new Map();
@@ -66,6 +67,24 @@ function normalizeMessages(messages) {
   return normalized;
 }
 
+async function verifyTurnstile(request, token, secret) {
+  const fields = new URLSearchParams({ secret, response: token });
+  const clientIp = request.headers.get('CF-Connecting-IP');
+  if (clientIp) fields.set('remoteip', clientIp);
+  try {
+    const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/x-www-form-urlencoded' },
+      body: fields
+    });
+    if (!response.ok) return false;
+    const result = await response.json();
+    return result?.success === true;
+  } catch {
+    return false;
+  }
+}
+
 function extractReply(result) {
   const candidates = [
     result?.response,
@@ -108,6 +127,17 @@ export async function onRequestPost({ request, env }) {
 
   // Honeypot field for simple automated submissions. It is never shown to users.
   if (typeof body.website === 'string' && body.website.trim()) return json({ error: 'Invalid request.' }, { status: 400 });
+
+  const turnstileSecret = typeof env.TURNSTILE_SECRET_KEY === 'string' ? env.TURNSTILE_SECRET_KEY.trim() : '';
+  if (turnstileSecret) {
+    const turnstileToken = typeof body.turnstileToken === 'string' ? body.turnstileToken.trim() : '';
+    if (!turnstileToken || turnstileToken.length > MAX_TURNSTILE_TOKEN_CHARS) {
+      return json({ error: 'Please complete the security check.' }, { status: 400 });
+    }
+    if (!(await verifyTurnstile(request, turnstileToken, turnstileSecret))) {
+      return json({ error: 'Security check failed.' }, { status: 403 });
+    }
+  }
 
   const messages = normalizeMessages(body.messages);
   if (!messages) return json({ error: 'Please send a valid message.' }, { status: 400 });

@@ -714,6 +714,8 @@ h2 span { color: var(--muted); }
 .ai-chat-prompts { display: flex; flex-wrap: wrap; gap: 7px; padding: 12px 20px 0; }
 .ai-chat-prompts button { padding: 7px 9px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--surface-2); color: var(--muted); cursor: pointer; font: var(--type-xs) var(--mono); letter-spacing: .03em; }
 .ai-chat-prompts button:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.ai-chat-turnstile { min-height: 0; padding: 5px 20px 0; overflow: hidden; }
+.ai-chat-turnstile-status { min-height: 18px; margin: 5px 20px 0; color: var(--muted); font: var(--type-xs)/1.45 var(--mono); }
 .ai-chat-form { display: flex; gap: 8px; padding: 14px 20px 9px; }
 .ai-chat-form input[type="text"] { min-width: 0; flex: 1; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 3px; outline: 0; background: var(--surface-2); color: var(--ink); font: var(--type-sm) var(--body); }
 .ai-chat-form input[type="text"]::placeholder { color: var(--faint); }

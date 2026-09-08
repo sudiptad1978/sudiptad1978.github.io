@@ -382,8 +382,9 @@ Chat panel → POST /api/chat Pages Function → Workers AI
 
 Relevant files:
 
-- `chat.js` — chat modal, quick prompts, loading state and same-origin API client.
-- `functions/api/chat.js` — validates requests, applies a small in-memory rate limit and honeypot check, calls Workers AI and returns a no-cache response.
+- `chat.js` — chat modal, quick prompts, loading state, Turnstile widget and same-origin API client.
+- `functions/api/chat.js` — validates requests, optionally verifies Cloudflare Turnstile, applies a small in-memory rate limit and honeypot check, calls Workers AI and returns a no-cache response.
+- `functions/api/chat-config.js` — exposes only the public Turnstile site key and enables the widget only when both Turnstile values are configured.
 - `content/assistant/knowledge.json` — the public facts the assistant is allowed to use.
 - `wrangler.toml` — binds the Pages project to Workers AI as `AI`.
 
@@ -395,12 +396,24 @@ The first release deliberately uses a curated context instead of a vector databa
 - The browser sends only the current short conversation to the same-origin Function.
 - Requests are limited by message count and size.
 - A honeypot field and lightweight per-isolate rate limit reduce simple automated abuse.
+- When configured, Cloudflare Turnstile is rendered in the chat panel and verified server-side before Workers AI is called.
 - The assistant must not invent employers, dates, certifications, salary information, metrics or responsibilities.
 - Provider keys are not placed in HTML or client-side JavaScript.
 
 ### Update the assistant context
 
-Edit `content/assistant/knowledge.json` when a public portfolio fact changes. Keep the context limited to information that is already intended for public display. Run the JavaScript checks and deploy from the repository root so Wrangler compiles both `functions/api/chat.js` and the `AI` binding.
+Edit `content/assistant/knowledge.json` when a public portfolio fact changes. Keep the context limited to information that is already intended for public display. Run the JavaScript checks and deploy from the repository root so Wrangler compiles both chat Functions and the `AI` binding.
+
+### Enable Turnstile
+
+Create a Managed Turnstile widget for `sudipta-dutta-portfolio.pages.dev` in the Cloudflare dashboard, then configure the values as Pages secrets. The site key is returned to the browser by `/api/chat-config`; the secret is used only by the server-side verification request.
+
+```bash
+npx wrangler pages secret put TURNSTILE_SITE_KEY --project-name sudipta-dutta-portfolio
+npx wrangler pages secret put TURNSTILE_SECRET_KEY --project-name sudipta-dutta-portfolio
+```
+
+The chat continues to work without the values, which keeps local development and an unconfigured deployment usable. Once both are present, reload the chat panel to render Turnstile and require a valid token for every request. Never commit either value or place the secret in browser code.
 
 ### Future retrieval upgrade
 
