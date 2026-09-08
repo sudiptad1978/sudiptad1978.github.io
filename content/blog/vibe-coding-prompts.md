@@ -10,7 +10,7 @@ readTime: "18 min read"
 
 > **Vibe coding works best when the vibe has guardrails.** This is a copy-ready prompt library for moving from a raw feature idea to a reviewed, tested and maintainable change.
 
-![The agentic build loop: context, plan, build and verify](/assets/blog/vibe-coding-loop.svg)
+![The agentic build loop: context, plan, build and verify](/assets/blog/vibe-coding-loop-v2.svg)
 
 ## How to use this playbook
 
