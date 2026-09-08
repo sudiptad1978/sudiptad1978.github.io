@@ -53,6 +53,12 @@
 .post-content pre { background: var(--surface); border: 1px solid var(--line-strong); overflow-x: auto; padding: 18px 19px; margin: 25px 0; }
 .post-content pre code { display: block; border: 0; padding: 0; background: transparent; color: var(--ink); font: var(--type-sm)/1.7 var(--mono); white-space: pre; }
 .post-content blockquote { border-left: 2px solid var(--accent); margin: 28px 0; padding: 5px 0 5px 20px; color: var(--ink); font: 500 var(--type-lg)/1.6 var(--display); }
+.post-table-wrap { width: 100%; overflow-x: auto; margin: 28px 0 32px; border: 1px solid var(--line-strong); }
+.post-content table { width: 100%; min-width: 760px; border-collapse: collapse; background: var(--surface); }
+.post-content th, .post-content td { padding: 11px 12px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: var(--type-xs); line-height: 1.55; text-align: left; vertical-align: top; }
+.post-content th { color: var(--ink); background: var(--accent-soft); font-family: var(--mono); font-weight: 500; letter-spacing: .03em; }
+.post-content tr:last-child td { border-bottom: 0; }
+.post-content td code, .post-content th code { font-size: inherit; }
 @media (max-width: 760px) {
   .blog-hero { padding-top: 58px; padding-bottom: 64px; }
   .blog-hero > p { font-size: var(--type-md); }

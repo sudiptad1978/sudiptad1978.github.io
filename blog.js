@@ -160,6 +160,26 @@
     return html;
   }
 
+  function splitTableRow(line) {
+    const trimmed = line.trim();
+    if (!trimmed.includes('|')) return null;
+    const withoutLeading = trimmed.startsWith('|') ? trimmed.slice(1) : trimmed;
+    const withoutOuter = withoutLeading.endsWith('|') ? withoutLeading.slice(0, -1) : withoutLeading;
+    const cells = withoutOuter.split('|').map((cell) => cell.trim());
+    return cells.length > 1 ? cells : null;
+  }
+
+  function isTableSeparator(line) {
+    const cells = splitTableRow(line);
+    return Boolean(cells && cells.every((cell) => /^:?-{3,}:?$/.test(cell)));
+  }
+
+  function renderTable(headers, rows) {
+    const headerHtml = headers.map((cell) => `<th scope="col">${inlineMarkdown(cell)}</th>`).join('');
+    const rowHtml = rows.map((row) => `<tr>${headers.map((_, index) => `<td>${inlineMarkdown(row[index] || '')}</td>`).join('')}</tr>`).join('');
+    return `<div class="post-table-wrap"><table><thead><tr>${headerHtml}</tr></thead><tbody>${rowHtml}</tbody></table></div>`;
+  }
+
   function renderMarkdown(markdown) {
     const lines = markdown.replace(/\r\n/g, '\n').split('\n');
     const output = [];
@@ -188,7 +208,8 @@
       codeLines = [];
     };
 
-    lines.forEach((line) => {
+    for (let index = 0; index < lines.length; index += 1) {
+      const line = lines[index];
       if (line.trim().startsWith('```')) {
         if (code) flushCode();
         else {
@@ -197,22 +218,40 @@
           code = true;
           codeLanguage = line.trim().slice(3).trim() || 'text';
         }
-        return;
+        continue;
       }
-      if (code) { codeLines.push(line); return; }
-      if (!line.trim()) { flushParagraph(); flushList(); return; }
+      if (code) { codeLines.push(line); continue; }
+      if (!line.trim()) { flushParagraph(); flushList(); continue; }
+
+      const tableHeader = splitTableRow(line);
+      if (tableHeader && isTableSeparator(lines[index + 1] || '')) {
+        flushParagraph();
+        flushList();
+        const rows = [];
+        index += 2;
+        while (index < lines.length) {
+          const row = splitTableRow(lines[index]);
+          if (!row || !lines[index].trim()) break;
+          rows.push(row);
+          index += 1;
+        }
+        output.push(renderTable(tableHeader, rows));
+        index -= 1;
+        continue;
+      }
+
       const heading = line.match(/^(#{2,4})\s+(.+)$/);
       if (heading) {
         flushParagraph(); flushList();
         const level = Math.min(heading[1].length, 4);
         output.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`);
-        return;
+        continue;
       }
       const quote = line.match(/^>\s?(.*)$/);
       if (quote) {
         flushParagraph(); flushList();
         output.push(`<blockquote>${inlineMarkdown(quote[1])}</blockquote>`);
-        return;
+        continue;
       }
       const unordered = line.match(/^[-*]\s+(.+)$/);
       const ordered = line.match(/^\d+\.\s+(.+)$/);
@@ -221,11 +260,11 @@
         const type = unordered ? 'ul' : 'ol';
         if (!list || list.type !== type) { flushList(); list = { type, items: [] }; }
         list.items.push(`<li>${inlineMarkdown((unordered || ordered)[1])}</li>`);
-        return;
+        continue;
       }
       flushList();
       paragraph.push(line.trim());
-    });
+    }
     flushCode(); flushParagraph(); flushList();
     return output.join('\n');
   }

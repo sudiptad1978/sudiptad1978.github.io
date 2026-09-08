@@ -1,5 +1,9 @@
 [
   {
+    "slug": "claude-code-skills",
+    "file": "/content/blog/claude-code-skills.md"
+  },
+  {
     "slug": "google-gemini-custom-gems",
     "file": "/content/blog/google-gemini-custom-gems.md"
   },

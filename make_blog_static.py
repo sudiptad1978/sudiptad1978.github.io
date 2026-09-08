@@ -57,6 +57,35 @@ def inline_markdown(value: str) -> str:
     return value
 
 
+def split_table_row(line: str) -> list[str] | None:
+    stripped = line.strip()
+    if "|" not in stripped:
+        return None
+    if stripped.startswith("|"):
+        stripped = stripped[1:]
+    if stripped.endswith("|"):
+        stripped = stripped[:-1]
+    cells = [cell.strip() for cell in stripped.split("|")]
+    return cells if len(cells) > 1 else None
+
+
+def is_table_separator(line: str) -> bool:
+    cells = split_table_row(line)
+    return bool(cells and all(re.fullmatch(r":?-{3,}:?", cell) for cell in cells))
+
+
+def render_table(headers: list[str], rows: list[list[str]]) -> str:
+    header_html = "".join(f'<th scope="col">{inline_markdown(cell)}</th>' for cell in headers)
+    row_html = "".join(
+        "<tr>" + "".join(
+            f'<td>{inline_markdown(row[index] if index < len(row) else "")}</td>'
+            for index in range(len(headers))
+        ) + "</tr>"
+        for row in rows
+    )
+    return f'<div class="post-table-wrap"><table><thead><tr>{header_html}</tr></thead><tbody>{row_html}</tbody></table></div>'
+
+
 def render_markdown(source: str) -> str:
     lines = source.replace("\r\n", "\n").splitlines()
     output: list[str] = []
@@ -89,7 +118,9 @@ def render_markdown(source: str) -> str:
             code_language = "text"
             code_lines.clear()
 
-    for line in lines:
+    index = 0
+    while index < len(lines):
+        line = lines[index]
         if line.strip().startswith("```"):
             if in_code:
                 flush_code()
@@ -98,18 +129,36 @@ def render_markdown(source: str) -> str:
                 flush_list()
                 in_code = True
                 code_language = line.strip()[3:].strip() or "text"
+            index += 1
             continue
         if in_code:
             code_lines.append(line)
+            index += 1
             continue
         if not line.strip():
             flush_paragraph()
             flush_list()
+            index += 1
             continue
         if line.strip() == "---":
             flush_paragraph()
             flush_list()
             output.append("<hr>")
+            index += 1
+            continue
+        table_header = split_table_row(line)
+        if table_header and index + 1 < len(lines) and is_table_separator(lines[index + 1]):
+            flush_paragraph()
+            flush_list()
+            rows: list[list[str]] = []
+            index += 2
+            while index < len(lines):
+                row = split_table_row(lines[index])
+                if not row or not lines[index].strip():
+                    break
+                rows.append(row)
+                index += 1
+            output.append(render_table(table_header, rows))
             continue
         heading = re.match(r"^(#{2,4})\s+(.+)$", line)
         if heading:
@@ -117,12 +166,14 @@ def render_markdown(source: str) -> str:
             flush_list()
             level = min(len(heading.group(1)), 4)
             output.append(f"<h{level}>{inline_markdown(heading.group(2))}</h{level}>")
+            index += 1
             continue
         quote = re.match(r"^>\s?(.*)$", line)
         if quote:
             flush_paragraph()
             flush_list()
             output.append(f"<blockquote>{inline_markdown(quote.group(1))}</blockquote>")
+            index += 1
             continue
         unordered = re.match(r"^[-*]\s+(.+)$", line)
         ordered = re.match(r"^\d+\.\s+(.+)$", line)
@@ -134,9 +185,11 @@ def render_markdown(source: str) -> str:
                 list_type = current
             match = unordered or ordered
             list_items.append(f"<li>{inline_markdown(match.group(1))}</li>")
+            index += 1
             continue
         flush_list()
         paragraph.append(line.strip())
+        index += 1
 
     flush_code()
     flush_paragraph()
