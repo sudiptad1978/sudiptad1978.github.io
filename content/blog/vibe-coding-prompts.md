@@ -6,11 +6,11 @@ tags: ["Vibe Coding", "Claude Code", "MCP", "AI-Augmented QA", "Automation"]
 readTime: "18 min read"
 ---
 
-![Vibe Coding Prompts — a 15-stage AI-assisted quality engineering playbook](/assets/blog/vibe-coding-prompts-cover.svg)
+![Vibe Coding Prompts — a 15-stage AI-assisted quality engineering playbook](/assets/blog/vibe-coding-prompts-cover-v2.svg)
 
 > **Vibe coding works best when the vibe has guardrails.** This is a copy-ready prompt library for moving from a raw feature idea to a reviewed, tested and maintainable change.
 
-![The agentic build loop: context, plan, build and verify](/assets/blog/vibe-coding-loop-v2.svg)
+![The agentic build loop: context, plan, build and verify](/assets/blog/vibe-coding-loop-v3.svg)
 
 ## How to use this playbook
 
