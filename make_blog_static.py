@@ -39,6 +39,14 @@ def esc(value: object) -> str:
 
 def inline_markdown(value: str) -> str:
     value = esc(value)
+    code_spans: list[str] = []
+
+    def save_code(match: re.Match[str]) -> str:
+        token = f"@@CODESPAN{len(code_spans)}@@"
+        code_spans.append(f"<code>{match.group(1)}</code>")
+        return token
+
+    value = re.sub(r"`([^`]+)`", save_code, value)
     value = re.sub(
         r"!\[([^\]]+)\]\((\/[^\s)]+|https?:\/\/[^\s)]+)\)",
         r'<figure class="post-figure"><img src="\2" alt="\1" loading="lazy"><figcaption>\1</figcaption></figure>',
@@ -54,12 +62,11 @@ def inline_markdown(value: str) -> str:
         r'<a href="\2" target="_blank" rel="noopener noreferrer">\1 ↗</a>',
         value,
     )
-    value = re.sub(r"`([^`]+)`", r"<code>\1</code>", value)
     value = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", value)
     value = re.sub(r"__([^_]+)__", r"<strong>\1</strong>", value)
     value = re.sub(r"\*([^*]+)\*", r"<em>\1</em>", value)
     value = re.sub(r"_([^_]+)_", r"<em>\1</em>", value)
-    return value
+    return re.sub(r"@@CODESPAN(\d+)@@", lambda match: code_spans[int(match.group(1))], value)
 
 
 def split_table_row(line: str) -> list[str] | None:

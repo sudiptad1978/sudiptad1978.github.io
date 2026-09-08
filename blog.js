@@ -150,7 +150,12 @@
 
   function inlineMarkdown(value) {
     let html = escapeHtml(value);
-    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    const codeSpans = [];
+    html = html.replace(/`([^`]+)`/g, (_, code) => {
+      const token = `@@CODESPAN${codeSpans.length}@@`;
+      codeSpans.push(`<code>${code}</code>`);
+      return token;
+    });
     html = html.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     html = html.replace(/__([^_]+)__/g, '<strong>$1</strong>');
     html = html.replace(/\*([^*]+)\*/g, '<em>$1</em>');
@@ -158,6 +163,7 @@
     html = html.replace(/!\[([^\]]+)\]\((\/[^\s)]+|https?:\/\/[^\s)]+)\)/g, '<figure class="post-figure"><img src="$2" alt="$1" loading="lazy"><figcaption>$1</figcaption></figure>');
     html = html.replace(/\[([^\]]+)\]\((#[^\s)]+)\)/g, '<a href="$2">$1</a>');
     html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1 ↗</a>');
+    html = html.replace(/@@CODESPAN(\d+)@@/g, (_, index) => codeSpans[Number(index)]);
     return html;
   }
 
