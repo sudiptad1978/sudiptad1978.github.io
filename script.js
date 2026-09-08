@@ -17,6 +17,9 @@
   const blogCarousel = document.getElementById('blogCarousel');
   const blogCarouselPrevious = document.getElementById('blogCarouselPrevious');
   const blogCarouselNext = document.getElementById('blogCarouselNext');
+  const projectsCarousel = document.getElementById('projectsCarousel');
+  const projectsCarouselPrevious = document.getElementById('projectsCarouselPrevious');
+  const projectsCarouselNext = document.getElementById('projectsCarouselNext');
   const prefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
 
   year.textContent = new Date().getFullYear();
@@ -97,6 +100,21 @@
     }
   }
 
+  function updateProjectsCarouselControls() {
+    if (!projectsCarousel) return;
+    const maximumScroll = Math.max(0, projectsCarousel.scrollWidth - projectsCarousel.clientWidth);
+    const atStart = projectsCarousel.scrollLeft <= 2;
+    const atEnd = projectsCarousel.scrollLeft >= maximumScroll - 2;
+    if (projectsCarouselPrevious) {
+      projectsCarouselPrevious.disabled = atStart;
+      projectsCarouselPrevious.setAttribute('aria-disabled', String(atStart));
+    }
+    if (projectsCarouselNext) {
+      projectsCarouselNext.disabled = atEnd;
+      projectsCarouselNext.setAttribute('aria-disabled', String(atEnd));
+    }
+  }
+
   function renderPortfolioBlog(posts) {
     if (!blogCarousel) return;
     blogCarousel.innerHTML = posts.map((post, index) => `
@@ -142,6 +160,19 @@
     window.addEventListener('resize', updateCarouselControls);
     updateCarouselControls();
     loadPortfolioBlog();
+  }
+
+  if (projectsCarousel) {
+    const scrollProjects = (direction) => projectsCarousel.scrollBy({ left: direction * Math.max(projectsCarousel.clientWidth * .82, 290), behavior: 'smooth' });
+    if (projectsCarouselPrevious) projectsCarouselPrevious.addEventListener('click', () => scrollProjects(-1));
+    if (projectsCarouselNext) projectsCarouselNext.addEventListener('click', () => scrollProjects(1));
+    projectsCarousel.addEventListener('scroll', updateProjectsCarouselControls, { passive: true });
+    projectsCarousel.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') { event.preventDefault(); scrollProjects(-1); }
+      if (event.key === 'ArrowRight') { event.preventDefault(); scrollProjects(1); }
+    });
+    window.addEventListener('resize', updateProjectsCarouselControls);
+    updateProjectsCarouselControls();
   }
 
   function setTheme(mode, save) {
