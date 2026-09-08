@@ -45,6 +45,11 @@ def inline_markdown(value: str) -> str:
         value,
     )
     value = re.sub(
+        r"\[([^\]]+)\]\((#[^\s)]+)\)",
+        r'<a href="\2">\1</a>',
+        value,
+    )
+    value = re.sub(
         r"\[([^\]]+)\]\((\/[^\s)]+|https?:\/\/[^\s)]+)\)",
         r'<a href="\2" target="_blank" rel="noopener noreferrer">\1 ↗</a>',
         value,
