@@ -115,11 +115,11 @@ h1 em, h2 em { color: var(--accent); font-style: normal; }
 .hero-lede { font-size: var(--type-lg); line-height: 1.7; color: var(--muted); max-width: 555px; }
 .hero-actions { display: flex; align-items: center; gap: 21px; margin-top: 36px; }
 .primary-button, .secondary-button { display: inline-flex; align-items: center; gap: 12px; padding: 13px 17px; font-family: var(--mono); text-transform: uppercase; letter-spacing: .07em; font-size: var(--type-xs); transition: transform .2s, background .2s, color .2s, border .2s; }
-.primary-button { color: #07100c; background: var(--accent); border: 1px solid var(--accent); }
+.primary-button { color: var(--bg); background: var(--accent); border: 1px solid var(--accent); }
 .primary-button:hover { transform: translateY(-2px); background: var(--accent-bright); }
 .primary-button span, .secondary-button span { font-size: 16px; line-height: 0; }
-.secondary-button { border: 1px solid var(--line-strong); color: var(--muted); }
-.secondary-button:hover { transform: translateY(-2px); color: var(--ink); border-color: var(--accent); }
+.secondary-button { background: var(--surface); border: 1px solid var(--line-strong); color: var(--ink); cursor: pointer; }
+.secondary-button:hover { transform: translateY(-2px); color: var(--ink); border-color: var(--accent); background: var(--accent-soft); }
 .hero-note { color: var(--faint); font: var(--type-xs) var(--mono); margin-top: 42px; text-transform: uppercase; letter-spacing: .05em; }
 .note-mark { color: var(--accent); font-size: 16px; margin-right: 8px; }
 .hero-visual { align-self: stretch; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
