@@ -480,6 +480,7 @@ h2 span { color: var(--muted); }
 .projects-heading h2 { margin: 0 0 12px; color: var(--ink); font-size: var(--type-heading); font-weight: 500; }
 .projects-heading h2 span { color: var(--muted); }
 .projects-heading p { max-width: 570px; color: var(--muted); font-size: var(--type-md); line-height: 1.65; margin: 0; }
+.projects-heading-copy { max-width: 760px !important; color: var(--ink) !important; font: 500 var(--type-heading)/1.25 var(--display) !important; margin: 0 !important; }
 .projects-carousel { display: flex; gap: 13px; overflow-x: auto; padding: 3px 4px 17px 1px; scroll-behavior: smooth; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; scrollbar-color: var(--accent-deep) var(--surface-2); scrollbar-width: thin; }
 .project-card { flex: 0 0 clamp(270px, 31vw, 350px); min-height: 246px; display: flex; flex-direction: column; padding: 22px 21px 20px; scroll-snap-align: start; border: 1px solid var(--line); background: linear-gradient(145deg, var(--surface), var(--surface-2)); transition: transform .2s, border-color .2s, box-shadow .2s, background .2s; }
 .project-card:hover { border-color: var(--accent); background: linear-gradient(145deg, var(--accent-soft), var(--surface)); box-shadow: 0 10px 22px rgba(0, 0, 0, .18); transform: translateY(-4px); }
