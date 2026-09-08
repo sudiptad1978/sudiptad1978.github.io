@@ -66,6 +66,32 @@ function normalizeMessages(messages) {
   return normalized;
 }
 
+function extractReply(result) {
+  const candidates = [
+    result?.response,
+    result?.output_text,
+    result?.text,
+    result?.choices?.[0]?.message?.content,
+    result?.choices?.[0]?.text,
+    result?.result?.response,
+    result?.result?.output_text,
+    result?.result?.text,
+    result?.result?.choices?.[0]?.message?.content,
+    result?.result?.choices?.[0]?.text
+  ];
+  for (const candidate of candidates) {
+    if (typeof candidate === 'string' && candidate.trim()) return candidate.trim();
+    if (Array.isArray(candidate)) {
+      const text = candidate.map((part) => {
+        if (typeof part === 'string') return part;
+        return typeof part?.text === 'string' ? part.text : typeof part?.content === 'string' ? part.content : '';
+      }).join('').trim();
+      if (text) return text;
+    }
+  }
+  return '';
+}
+
 export async function onRequestPost({ request, env }) {
   if (!originIsAllowed(request)) return json({ error: 'Origin not allowed.' }, { status: 403 });
   if (isRateLimited(request)) return json({ error: 'Please wait a moment before trying again.' }, { status: 429 });
