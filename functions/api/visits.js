@@ -50,7 +50,7 @@ export async function onRequestPost({ request, env }) {
   };
 
   if (!recentVisit) {
-    headers['set-cookie'] = `${VISIT_COOKIE}=1; Max-Age=${VISIT_WINDOW_SECONDS}; Path=/; Secure; SameSite=Lax`;
+    headers['set-cookie'] = `${VISIT_COOKIE}=1; Max-Age=${VISIT_WINDOW_SECONDS}; Path=/; Secure; HttpOnly; SameSite=Lax`;
   }
 
   return json({ total: Number(row.total), counted: !recentVisit }, { headers });
