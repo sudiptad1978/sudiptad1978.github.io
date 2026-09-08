@@ -32,7 +32,10 @@ The QR code uses the current page origin at runtime, so it follows the Cloudflar
 ├── content/blog/*.md                  # Markdown posts with frontmatter
 ├── _headers                           # Cloudflare Pages security/cache headers
 ├── _redirects                         # Root fallback rule
-├── wrangler.toml                      # Cloudflare Pages project config
+├── functions/api/visits.js            # Public visitor-counter Pages Function
+├── visitor-counter.js                 # Counter display and API client
+├── db/visitor-counter.sql             # D1 counter schema
+├── wrangler.toml                      # Cloudflare Pages and D1 config
 └── .gitignore
 ```
 
@@ -271,6 +274,98 @@ https://<deployment-id>.sudipta-dutta-portfolio.pages.dev
 7. Save the configuration and trigger the first deployment.
 
 After Git integration is enabled, pushes to `main` can trigger automatic Pages deployments. Avoid mixing automatic Git deployments and manual Wrangler deployments unless that is intentional.
+
+## Analytics and public visitor counter
+
+### Cloudflare Web Analytics
+
+The HTML pages include the Cloudflare Web Analytics beacon. The beacon token is a public site identifier; it is not a Cloudflare API token. To enable or manage the private dashboard:
+
+1. Open **Cloudflare Dashboard → Web Analytics**.
+2. Add or select `sudipta-dutta-portfolio.pages.dev`.
+3. Open **Manage site** to confirm the hostname and beacon status.
+4. Allow a few minutes and then load the production site in a browser before checking the dashboard.
+
+The beacon reports dashboard analytics such as page views, referrers, device information, geography and performance timings. Privacy tools and ad blockers can prevent some beacons from being received.
+
+### Public visitor counter architecture
+
+The public counter is an approximate visit count, not an exact unique-person count. A browser can add at most one visit during a 24-hour window. Clearing cookies, using another browser or blocking cookies can cause another count. The implementation does not store IP addresses or browser fingerprints.
+
+The request flow is:
+
+```text
+Browser → /api/visits Pages Function → D1 site_counter table
+```
+
+Relevant files:
+
+- `functions/api/visits.js` — reads the first-party visit cookie, increments D1 when needed and returns a no-cache JSON response.
+- `visitor-counter.js` — calls the endpoint and reveals the styled footer counter only after a successful response.
+- `db/visitor-counter.sql` — creates the single-row `site_counter` table.
+- `wrangler.toml` — binds the Pages project to D1 as `VISITOR_COUNTER_DB`.
+
+### Create or recreate the D1 database
+
+The database is a Cloudflare resource and is not stored in Git. For a new Cloudflare account or a fresh project:
+
+```bash
+npx wrangler login
+npx wrangler d1 create sudipta-portfolio-visitor-counter
+```
+
+Copy the returned `database_id` into the `[[d1_databases]]` block in `wrangler.toml`. Keep the database name and binding as follows:
+
+```toml
+[[d1_databases]]
+binding = "VISITOR_COUNTER_DB"
+database_name = "sudipta-portfolio-visitor-counter"
+database_id = "<your-database-id>"
+```
+
+Initialize the remote database schema:
+
+```bash
+npx wrangler d1 execute sudipta-portfolio-visitor-counter \
+  --remote \
+  --file db/visitor-counter.sql \
+  --yes
+```
+
+Do not put D1 credentials, API tokens or other secrets in HTML, JavaScript, `README.md` or Git configuration.
+
+### Deploy the counter
+
+The `functions` directory must be at the root of the directory passed to Wrangler. Deploy from the repository root so Pages compiles the Function and applies the D1 binding:
+
+```bash
+npx wrangler pages deploy . \
+  --project-name sudipta-dutta-portfolio \
+  --branch main \
+  --commit-message "Update portfolio and visitor counter"
+```
+
+Preview deployments return a value with `counted: false`; only `sudipta-dutta-portfolio.pages.dev` can change the production total. When adding a custom domain, add that hostname to `PRODUCTION_HOSTS` in `functions/api/visits.js` before deploying.
+
+### Verify the counter
+
+Read the current total without incrementing it:
+
+```bash
+curl -sS https://sudipta-dutta-portfolio.pages.dev/api/visits
+```
+
+Test an increment with a temporary cookie jar. This counts one test visit, so reset or account for it if testing a live total:
+
+```bash
+curl -sS -c /tmp/portfolio-counter.cookies \
+  -X POST https://sudipta-dutta-portfolio.pages.dev/api/visits
+
+curl -sS -b /tmp/portfolio-counter.cookies \
+  -X POST https://sudipta-dutta-portfolio.pages.dev/api/visits
+```
+
+The first response should report `counted: true`; the second request with the same cookie should report `counted: false` and the same total.
 
 ## Custom domain
 
