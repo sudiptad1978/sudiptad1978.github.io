@@ -714,8 +714,9 @@ h2 span { color: var(--muted); }
 .ai-chat-prompts { display: flex; flex-wrap: wrap; gap: 7px; padding: 12px 20px 0; }
 .ai-chat-prompts button { padding: 7px 9px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--surface-2); color: var(--muted); cursor: pointer; font: var(--type-xs) var(--mono); letter-spacing: .03em; }
 .ai-chat-prompts button:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-.ai-chat-turnstile { min-height: 0; padding: 5px 20px 0; overflow: hidden; }
-.ai-chat-turnstile-status { min-height: 18px; margin: 5px 20px 0; color: var(--muted); font: var(--type-xs)/1.45 var(--mono); }
+.ai-chat-verification { flex: none; padding: 10px 20px 0; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface-2) 42%, var(--surface)); }
+.ai-chat-turnstile { display: flex; align-items: center; justify-content: flex-start; min-height: 0; overflow: visible; }
+.ai-chat-turnstile-status { min-height: 18px; margin: 4px 0 0; color: var(--muted); font: var(--type-xs)/1.45 var(--mono); }
 .ai-chat-form { display: flex; gap: 8px; padding: 14px 20px 9px; }
 .ai-chat-form input[type="text"] { min-width: 0; flex: 1; min-height: 44px; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 3px; outline: 0; background: var(--surface-2); color: var(--ink); font: var(--type-sm) var(--body); }
 .ai-chat-form input[type="text"]::placeholder { color: var(--faint); }
@@ -887,6 +888,7 @@ body.booking-open { overflow: hidden; }
   .ai-chat-dialog { width: 100%; max-height: 100vh; height: 100%; border: 0; border-radius: 0; }
   .ai-chat-header { padding: 18px 16px 15px; }
   .ai-chat-messages { flex: 1; max-height: none; padding-left: 16px; padding-right: 16px; }
-  .ai-chat-prompts, .ai-chat-form { padding-left: 16px; padding-right: 16px; }
+  .ai-chat-prompts, .ai-chat-form, .ai-chat-verification { padding-left: 16px; padding-right: 16px; }
+  .ai-chat-turnstile { justify-content: center; }
   .ai-chat-note { padding-left: 16px; padding-right: 16px; }
 }

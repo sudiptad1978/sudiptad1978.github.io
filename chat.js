@@ -11,6 +11,7 @@
   const quickPrompts = [...document.querySelectorAll('[data-chat-prompt]')];
   const submitButton = document.getElementById('aiChatSubmit');
   const status = document.getElementById('aiChatStatus');
+  const turnstileVerification = document.getElementById('aiChatVerification');
   const turnstileContainer = document.getElementById('aiChatTurnstile');
   const turnstileStatus = document.getElementById('aiChatTurnstileStatus');
   if (!modal || !launchButton || !closeButton || !form || !input || !messagesElement || !submitButton) return;
@@ -113,6 +114,7 @@
       turnstileWidget = turnstile.render(turnstileContainer, {
         sitekey: config.siteKey,
         action: 'portfolio_chat',
+        size: window.matchMedia('(max-width: 760px)').matches ? 'compact' : 'normal',
         theme: document.body.dataset.theme === 'light' ? 'light' : 'dark',
         callback: (token) => {
           turnstileToken = token;

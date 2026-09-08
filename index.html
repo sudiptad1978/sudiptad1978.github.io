@@ -281,8 +281,10 @@
             <button type="button" data-chat-prompt="Show me the GitHub projects.">Show the projects</button>
             <button type="button" data-chat-prompt="How can I book a call?">Book a call</button>
           </div>
-          <div class="ai-chat-turnstile" id="aiChatTurnstile" hidden aria-label="Cloudflare security verification"></div>
-          <p class="ai-chat-turnstile-status" id="aiChatTurnstileStatus" role="status" aria-live="polite"></p>
+          <div class="ai-chat-verification" id="aiChatVerification" aria-label="Cloudflare security verification" hidden>
+            <div class="ai-chat-turnstile" id="aiChatTurnstile" hidden></div>
+            <p class="ai-chat-turnstile-status" id="aiChatTurnstileStatus" role="status" aria-live="polite"></p>
+          </div>
           <form class="ai-chat-form" id="aiChatForm">
             <label class="sr-only" for="aiChatInput">Ask the portfolio assistant</label>
             <input id="aiChatInput" name="message" type="text" maxlength="1200" autocomplete="off" placeholder="Ask a question…" required>
