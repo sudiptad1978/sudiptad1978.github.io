@@ -1,5 +1,5 @@
 ---
-title: "Google Gemini Custom Gems: A Step-by-Step Masterclass for Reusable AI Workflows"
+title: "Google Gemini Custom Gems: A Step-by-Step Guide to Reusable AI Workflows"
 date: "2026-09-08"
 summary: "Build reliable Custom Gems in Gemini with practical instructions, knowledge files, testing techniques, workflow examples and a copy-ready system-instruction template."
 tags: ["Gemini", "Custom AI", "Prompt Engineering", "Automation", "Productivity"]
