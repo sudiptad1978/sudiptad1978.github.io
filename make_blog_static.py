@@ -190,14 +190,16 @@ def replace_between(source: str, start_marker: str, end_marker: str, replacement
 
 
 def render_index(posts: list[dict]) -> None:
-    path = ROUTES / "index.html"
-    source = path.read_text()
     cards = "\n".join(card_html(post, index) for index, post in enumerate(posts))
     wrapper = f'''<div id="postList" class="post-list" aria-live="polite" data-automation-id="element-postlist-17" data-static-post-list="true">
         {cards}
       </div>'''
-    source = replace_between(source, '<div id="postList"', "\n      </section>", wrapper + "\n")
-    path.write_text(source)
+    for path in (ROUTES / "index.html", ROOT / "blog.html"):
+        if not path.exists():
+            continue
+        source = path.read_text()
+        source = replace_between(source, '<div id="postList"', "\n      </section>", wrapper + "\n")
+        path.write_text(source)
 
 
 def render_routes(posts: list[dict]) -> None:
