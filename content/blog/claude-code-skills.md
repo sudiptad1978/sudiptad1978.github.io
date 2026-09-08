@@ -42,6 +42,9 @@ Jira loop closure → test cases, PR links, issue links, Confluence cross-links
 2. [Skills versus subagents, MCP servers, and `CLAUDE.md`](#2-skills-versus-subagents-mcp-servers-and-claudemd)
 3. [Build, test and maintain a project Skill](#3-build-test-and-maintain-a-project-skill)
 4. [Discovery, progressive disclosure and failure modes](#4-discovery-progressive-disclosure-and-failure-modes)
+   - [Context and cost budgeting](#context-and-cost-budgeting)
+   - [When multiple Skills match at runtime](#when-multiple-skills-match-at-runtime)
+   - [Deprecate without surprising the team](#deprecate-without-surprising-the-team)
 5. [Distribute Skills and connect them to tools safely](#5-distribute-skills-and-connect-them-to-tools-safely)
 6. [A continuous PRD-to-tested-PR workflow](#6-a-continuous-prd-to-tested-pr-workflow)
 7. [Put `test-case-writer` in the control loop](#7-put-test-case-writer-in-the-control-loop)
@@ -312,7 +315,7 @@ The exact internal caching and selection behavior can change. Treat this as an o
 
 Progressive disclosure reduces the initial cost, but it does not make Skill content free. Current documentation recommends keeping `SKILL.md` under 500 lines. Once invoked, its rendered content stays in the conversation across later turns, so every extra explanation becomes recurring context. Supporting references are cheaper when they remain unopened, but the Skill must name them clearly enough for Claude to know when to read them.
 
-The discovery listing also has a budget. Current documentation says the combined `description` and `when_to_use` text is truncated at 1,536 characters in the Skill listing, and that the listing budget scales with the model context. That is a reason to put the trigger and exclusion first, not a reason to write a miniature manual in frontmatter.
+The discovery listing also has a budget. Use the exact documented field name `when_to_use`, including the underscore. Current documentation says the combined `description` and `when_to_use` text is truncated at 1,536 characters in the Skill listing, and that the listing budget scales with the model context. That is a reason to put the trigger and exclusion first, not a reason to write a miniature manual in frontmatter.
 
 For longer sessions, current docs describe auto-compaction reattaching the first 5,000 tokens of each recently invoked Skill within a combined 25,000-token budget. Those figures are implementation details and may change. Use `/context`, `/doctor`, or `/skill-doctor` where supported to inspect listing cost and contributors, and measure your own prompts rather than promising a fixed number of Skills that “always fits.”
 
@@ -604,7 +607,7 @@ Keep write operations separate from analysis. A safe default is to draft comment
 
 ### What “tested pull request” should mean
 
-The word tested should describe evidence, not an agent’s confidence. A `pr-check` result should identify:
+The word tested should describe evidence, not an agent’s confidence. The [Appendix D runbook template](#appendix-d-prd-to-tested-pr-runbook-template) turns this evidence into a repeatable delivery record. A `pr-check` result should identify:
 
 - the commit or pull-request revision reviewed
 - the Story acceptance criteria and changed behavior covered
