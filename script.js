@@ -33,12 +33,14 @@
     if (!bookingModal || bookingModal.hidden) return;
     bookingModal.hidden = true;
     body.classList.remove('booking-open');
+    bookingTriggers.forEach((trigger) => trigger.setAttribute('aria-expanded', 'false'));
     if (lastBookingTrigger) lastBookingTrigger.focus();
   }
 
   function openBooking(trigger) {
     if (!bookingModal) return;
     lastBookingTrigger = trigger;
+    bookingTriggers.forEach((bookingTrigger) => bookingTrigger.setAttribute('aria-expanded', String(bookingTrigger === trigger)));
     if (bookingFrame && bookingFrame.dataset.src && !bookingFrame.hasAttribute('src')) bookingFrame.src = bookingFrame.dataset.src;
     bookingModal.hidden = false;
     body.classList.add('booking-open');
