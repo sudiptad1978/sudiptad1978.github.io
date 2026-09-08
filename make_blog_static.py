@@ -74,6 +74,12 @@ def is_table_separator(line: str) -> bool:
     return bool(cells and all(re.fullmatch(r":?-{3,}:?", cell) for cell in cells))
 
 
+def slugify_heading(value: str) -> str:
+    value = value.lower().strip().replace("`", "")
+    value = re.sub(r"[^a-z0-9\s-]", "", value)
+    return re.sub(r"\s+", "-", value)
+
+
 def render_table(headers: list[str], rows: list[list[str]]) -> str:
     header_html = "".join(f'<th scope="col">{inline_markdown(cell)}</th>' for cell in headers)
     row_html = "".join(
@@ -165,7 +171,7 @@ def render_markdown(source: str) -> str:
             flush_paragraph()
             flush_list()
             level = min(len(heading.group(1)), 4)
-            output.append(f"<h{level}>{inline_markdown(heading.group(2))}</h{level}>")
+            output.append(f'<h{level} id="{slugify_heading(heading.group(2))}">{inline_markdown(heading.group(2))}</h{level}>')
             index += 1
             continue
         quote = re.match(r"^>\s?(.*)$", line)

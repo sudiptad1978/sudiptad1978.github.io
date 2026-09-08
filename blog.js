@@ -180,6 +180,13 @@
     return `<div class="post-table-wrap"><table><thead><tr>${headerHtml}</tr></thead><tbody>${rowHtml}</tbody></table></div>`;
   }
 
+  function slugifyHeading(value) {
+    return value.toLowerCase().trim()
+      .replace(/`/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-');
+  }
+
   function renderMarkdown(markdown) {
     const lines = markdown.replace(/\r\n/g, '\n').split('\n');
     const output = [];
@@ -244,7 +251,7 @@
       if (heading) {
         flushParagraph(); flushList();
         const level = Math.min(heading[1].length, 4);
-        output.push(`<h${level}>${inlineMarkdown(heading[2])}</h${level}>`);
+        output.push(`<h${level} id="${slugifyHeading(heading[2])}">${inlineMarkdown(heading[2])}</h${level}>`);
         continue;
       }
       const quote = line.match(/^>\s?(.*)$/);
