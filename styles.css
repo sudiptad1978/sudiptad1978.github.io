@@ -88,7 +88,7 @@ button { font: inherit; color: inherit; }
 .topbar-label { display: flex; gap: 11px; align-items: center; }
 .topbar-divider { display: inline-block; height: 1px; width: 35px; background: var(--line-strong); }
 .topbar-actions { display: flex; align-items: center; gap: 22px; }
-.text-button, .theme-button { font-family: var(--mono); font-size: var(--type-xs); text-transform: uppercase; letter-spacing: .08em; background: none; border: 0; cursor: pointer; color: var(--muted); padding: 9px 0; }
+.text-button, .theme-button { min-height: 44px; font-family: var(--mono); font-size: var(--type-xs); text-transform: uppercase; letter-spacing: .08em; background: none; border: 0; cursor: pointer; color: var(--muted); padding: 9px 0; }
 .text-button:hover, .theme-button:hover { color: var(--accent); }
 .download-icon { color: var(--accent); font-size: 16px; margin-right: 6px; }
 .theme-button { display: flex; gap: 8px; align-items: center; border-left: 1px solid var(--line); padding-left: 22px; }
