@@ -1,5 +1,9 @@
 [
   {
+    "slug": "vibe-coding-prompts",
+    "file": "/content/blog/vibe-coding-prompts.md"
+  },
+  {
     "slug": "using-claude-code-test-automation",
     "file": "/content/blog/using-claude-code-test-automation.md"
   },
