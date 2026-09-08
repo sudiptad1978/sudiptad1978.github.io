@@ -95,7 +95,11 @@ export async function onRequestPost({ request, env }) {
       ],
       chat_template_kwargs: { enable_thinking: false }
     });
-    const reply = typeof result?.response === 'string' ? result.response.trim() : '';
+    const reply = typeof result?.response === 'string'
+      ? result.response.trim()
+      : typeof result?.choices?.[0]?.message?.content === 'string'
+        ? result.choices[0].message.content.trim()
+        : '';
     if (!reply) return json({ error: 'The assistant did not return a response.' }, { status: 502 });
     return json({ reply });
   } catch (error) {
