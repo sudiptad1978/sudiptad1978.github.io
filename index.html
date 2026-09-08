@@ -115,7 +115,7 @@
             <div class="hero-proof-stat" data-automation-id="hero-proof-years"><strong data-automation-id="element-auto-1">21<span data-automation-id="element-auto-2">+</span></strong><span data-automation-id="element-auto-3">years in IT</span></div>
             <div class="hero-proof-stat" data-automation-id="hero-proof-coverage"><strong data-automation-id="element-auto-4">80<span data-automation-id="element-auto-5">%</span></strong><span data-automation-id="element-auto-6">automation coverage</span></div>
           </div>
-          <div class="hero-actions" data-automation-id="hero-actions"><a class="primary-button" href="resume.pdf" download="Sudipta-Dutta-Resume.pdf" aria-label="Download Sudipta Dutta's resume PDF" data-automation-id="hero-resume-link">Get the resume <span aria-hidden="true">↓</span></a><a class="secondary-button" href="#contact" data-automation-id="hero-contact-link">Start a conversation <span aria-hidden="true">↘</span></a></div>
+          <div class="hero-actions" data-automation-id="hero-actions"><button class="primary-button booking-trigger" type="button" data-booking-open aria-haspopup="dialog" aria-controls="bookingModal" data-automation-id="hero-booking-button">Book a 1:1 Call <span aria-hidden="true">↗</span></button><a class="secondary-button" href="resume.pdf" download="Sudipta-Dutta-Resume.pdf" aria-label="Download Sudipta Dutta's resume PDF" data-automation-id="hero-resume-link">Get the resume <span aria-hidden="true">↓</span></a></div>
         </div>
         <div class="hero-visual" aria-label="Portrait and profile details" data-automation-id="element-hero-visual-19">
           <div class="portrait-frame" data-automation-id="element-portrait-frame-20">
@@ -235,9 +235,27 @@
         </div>
       </section>
       <section class="contact-section section-pad" id="contact" aria-labelledby="contact-title" data-automation-id="element-contact-9">
-        <div class="contact-copy" data-automation-id="element-contact-copy-94"><div class="eyebrow" data-automation-id="element-eyebrow-95"> CONTACT</div><h2 id="contact-title" data-automation-id="element-h2-4">Let’s make quality<br  data-automation-id="element-br-6"/><em data-automation-id="element-em-2">a competitive edge.</em></h2><p data-automation-id="element-p-19">Have a complex product, a quality transformation in mind or a release process ready for a reset? I’d love to hear about it.</p><a class="primary-button" href="mailto:deep.sudipta@gmail.com" data-automation-id="element-primary-button-13">deep.sudipta@gmail.com <span data-automation-id="element-span-125">↗</span></a></div>
+        <div class="contact-copy" data-automation-id="element-contact-copy-94"><div class="eyebrow" data-automation-id="element-eyebrow-95"> CONTACT</div><h2 id="contact-title" data-automation-id="element-h2-4">Let’s make quality<br  data-automation-id="element-br-6"/><em data-automation-id="element-em-2">a competitive edge.</em></h2><p data-automation-id="element-p-19">Have a complex product, a quality transformation in mind or a release process ready for a reset? I’d love to hear about it.</p><a class="primary-button" href="mailto:deep.sudipta@gmail.com" data-automation-id="element-primary-button-13">deep.sudipta@gmail.com <span data-automation-id="element-span-125">↗</span></a><button class="secondary-button booking-trigger contact-booking-button" type="button" data-booking-open aria-haspopup="dialog" aria-controls="bookingModal" data-automation-id="contact-booking-button">Book a 1:1 Call <span aria-hidden="true">↗</span></button></div>
         <div class="contact-aside" data-automation-id="element-contact-aside-96"><div class="qr-card" data-automation-id="element-qr-card-97"><div class="qr-head" data-automation-id="element-qr-head-98"><span data-automation-id="element-span-126">SCAN TO OPEN</span><span class="qr-live" data-automation-id="element-qr-live-127"><i data-automation-id="element-i-4"></i> LIVE PROFILE</span></div><div class="qr-wrap" data-automation-id="element-qr-wrap-99"><div id="qrCode" class="qr-code" role="img" aria-label="QR code for Sudipta Dutta profile" data-automation-id="element-qrcode-100"></div></div><p data-automation-id="element-p-20">Point your camera here to open this portfolio.</p><button class="copy-link" id="copyLink" type="button" aria-label="Copy profile link" data-automation-id="element-copylink-9">Copy profile link <span data-automation-id="element-span-128">⧉</span></button></div><div class="contact-details" data-automation-id="element-contact-details-101"><a href="tel:+46762265270" aria-label="Call Sudipta Dutta at +46 762265270" data-automation-id="element-a-14"><span data-automation-id="element-span-129">Phone</span>+46 762265270</a><a href="https://www.linkedin.com/in/duttasudipta" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in new tab)" data-automation-id="element-a-15"><span data-automation-id="element-span-130">LinkedIn</span>/in/duttasudipta ↗</a><span data-automation-id="element-span-131"><span data-automation-id="element-span-132">Based in</span>Älvsjö · Stockholm · Sweden</span></div></div>
       </section>
+
+      <div class="booking-modal" id="bookingModal" hidden>
+        <div class="booking-backdrop" data-booking-close></div>
+        <section class="booking-dialog" role="dialog" aria-modal="true" aria-labelledby="booking-title" aria-describedby="booking-description">
+          <div class="booking-dialog-header">
+            <div>
+              <div class="eyebrow">CONNECT &amp; BOOK</div>
+              <h2 id="booking-title">Book a 1:1 Call</h2>
+              <p id="booking-description">Choose a time that works for you. Cal.com will handle the calendar invite and Google Meet details.</p>
+            </div>
+            <button class="booking-close" type="button" data-booking-close aria-label="Close booking dialog">×</button>
+          </div>
+          <div class="booking-frame-wrap">
+            <iframe class="booking-frame" id="bookingFrame" data-src="https://cal.com/sudipta-dutta/15min?embed=true" title="Book a 15-minute call with Sudipta Dutta" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+          <p class="booking-fallback">Booking panel not loading? <a href="https://cal.com/sudipta-dutta/15min" target="_blank" rel="noopener noreferrer">Open Cal.com in a new tab <span aria-hidden="true">↗</span></a></p>
+        </section>
+      </div>
 
       <div id="toast" class="toast" role="status" aria-live="polite" hidden data-automation-id="profile-toast"></div>
       <footer class="footer section-pad" data-automation-id="element-footer-1"><span data-automation-id="element-span-133">© <span id="year" data-automation-id="element-year-134">2026</span> Sudipta Dutta</span><span class="footer-visitor-count" data-visitor-counter hidden aria-live="polite"><span class="footer-visitor-label">Portfolio visits</span><strong data-visitor-total>—</strong></span><span data-automation-id="element-span-135">Designed for quality-minded teams <span class="footer-dot" data-automation-id="element-footer-dot-136">◆</span></span><a href="#top" data-automation-id="element-a-16">Back to top ↑</a></footer>

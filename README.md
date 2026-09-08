@@ -367,6 +367,39 @@ curl -sS -b /tmp/portfolio-counter.cookies \
 
 The first response should report `counted: true`; the second request with the same cookie should report `counted: false` and the same total.
 
+## Cal.com booking
+
+The portfolio includes a styled **Book a 1:1 Call** CTA in the hero and Contact section. It opens a modal that lazy-loads the Cal.com booking page, while a direct-link fallback opens the same booking flow in a new tab.
+
+Current booking link:
+
+```text
+https://cal.com/sudipta-dutta/15min
+```
+
+Cal.com owns the availability, timezone conversion, calendar invite, Google Meet details and confirmation flow. The portfolio does not receive or store Google Calendar credentials.
+
+### Change the booking link
+
+Update both Cal.com URLs in `index.html`:
+
+- The iframe `data-src` value, including `?embed=true`.
+- The fallback link `href` value without the embed query parameter.
+
+Keep the `bookingModal` markup, `data-booking-open` triggers and `booking-frame` styles intact so keyboard focus, Escape-to-close behavior, mobile layout and reduced third-party loading continue to work.
+
+### Cal.com setup checklist
+
+1. Create or edit the event type in Cal.com.
+2. Connect the Google Calendar used for availability.
+3. Configure the meeting duration, availability window, buffer and minimum notice.
+4. Select Google Meet or another supported meeting location.
+5. Publish the event type.
+6. Copy the public event URL into `index.html`.
+7. Open the production hero CTA and complete a test booking.
+
+Do not place Cal.com account passwords, Google OAuth credentials or provider API keys in this repository.
+
 ## Custom domain
 
 1. Open the Pages project in the Cloudflare dashboard.

@@ -20,9 +20,55 @@
   const projectsCarousel = document.getElementById('projectsCarousel');
   const projectsCarouselPrevious = document.getElementById('projectsCarouselPrevious');
   const projectsCarouselNext = document.getElementById('projectsCarouselNext');
+  const bookingModal = document.getElementById('bookingModal');
+  const bookingFrame = document.getElementById('bookingFrame');
+  const bookingTriggers = [...document.querySelectorAll('[data-booking-open]')];
+  const bookingCloseTargets = bookingModal ? [...bookingModal.querySelectorAll('[data-booking-close]')] : [];
   const prefersDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+  let lastBookingTrigger = null;
 
   year.textContent = new Date().getFullYear();
+
+  function closeBooking() {
+    if (!bookingModal || bookingModal.hidden) return;
+    bookingModal.hidden = true;
+    body.classList.remove('booking-open');
+    if (lastBookingTrigger) lastBookingTrigger.focus();
+  }
+
+  function openBooking(trigger) {
+    if (!bookingModal) return;
+    lastBookingTrigger = trigger;
+    if (bookingFrame && bookingFrame.dataset.src && !bookingFrame.hasAttribute('src')) bookingFrame.src = bookingFrame.dataset.src;
+    bookingModal.hidden = false;
+    body.classList.add('booking-open');
+    const closeButton = bookingModal.querySelector('.booking-close');
+    window.setTimeout(() => closeButton?.focus(), 0);
+  }
+
+  bookingTriggers.forEach((trigger) => trigger.addEventListener('click', () => openBooking(trigger)));
+  bookingCloseTargets.forEach((target) => target.addEventListener('click', closeBooking));
+  if (bookingModal) {
+    bookingModal.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeBooking();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = [...bookingModal.querySelectorAll('button, a, iframe')].filter((element) => !element.disabled && !element.hidden);
+      if (focusable.length < 2) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+  }
 
   function setMenu(open) {
     if (!menuToggle || !siteNav || !rail) return;
