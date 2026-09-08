@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en" data-automation-id="element-html-1">
+<head data-automation-id="element-head-1">
+  <meta charset="utf-8"  data-automation-id="element-meta-1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"  data-automation-id="element-meta-2"/>
+  <meta name="theme-color" content="#0b1116"  data-automation-id="element-meta-3"/>
+  <meta name="description" content="A practical workflow for using Claude Code, Playwright and MCP to generate, maintain and review test automation without outsourcing engineering judgement."  data-automation-id="element-meta-4"/>
+  <meta property="og:title" content="Using Claude Code as a Test Automation Pair Programmer — Sudipta Dutta" data-automation-id="seo-og-title"/>
+  <meta property="og:description" content="A practical workflow for using Claude Code, Playwright and MCP to generate, maintain and review test automation without outsourcing engineering judgement." data-automation-id="seo-og-description"/>
+  <meta property="og:type" content="article" data-automation-id="seo-og-type"/>
+  <meta property="og:url" content="https://sudipta-dutta-portfolio.pages.dev/blog/using-claude-code-test-automation/" data-automation-id="seo-og-url"/>
+  <meta property="og:image" content="https://sudipta-dutta-portfolio.pages.dev/assets/profile.jpeg" data-automation-id="seo-og-image"/>
+  <meta name="twitter:card" content="summary_large_image" data-automation-id="seo-twitter-card"/>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"  data-automation-id="element-link-1"/>
+  <link rel="stylesheet" href="/styles.css"  data-automation-id="element-link-2"/>
+  <link rel="stylesheet" href="/blog.css"  data-automation-id="element-link-3"/>
+  <title data-automation-id="element-title-1">Using Claude Code as a Test Automation Pair Programmer — Sudipta Dutta</title>
+</head>
+<body data-theme="dark" data-accent="mint" data-automation-id="element-body-1">
+  <div class="site-shell" data-automation-id="element-site-shell-1">
+    <aside class="rail" aria-label="Profile navigation" data-automation-id="element-rail-1">
+      <div class="rail-topline" data-automation-id="element-rail-topline-2"><span class="status-dot" data-automation-id="element-status-dot-1"></span><span data-automation-id="element-span-2">Available for impact</span></div>
+      <a class="identity" href="/" aria-label="Back to portfolio" data-automation-id="element-identity-1">
+        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-3"><img class="avatar" src="/assets/profile.jpeg" alt="Profile portrait"  data-automation-id="element-avatar-1"/></div>
+        <div class="identity-copy" data-automation-id="element-identity-copy-4"><strong data-automation-id="element-strong-1">Sudipta Dutta</strong><span data-automation-id="element-span-3">Quality Engineering</span></div>
+      </a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation menu" data-automation-id="menu-toggle"><span class="menu-toggle-icon" aria-hidden="true" data-automation-id="element-menu-toggle-icon-4"><i data-automation-id="element-i-1"></i><i data-automation-id="element-i-2"></i><i data-automation-id="element-i-3"></i></span><span data-automation-id="element-span-5">Menu</span></button>
+      <nav class="nav-links" id="siteNav" aria-label="Main navigation" data-automation-id="element-sitenav-1">
+        <a class="nav-link" href="/" data-automation-id="element-nav-link-2"><span data-automation-id="element-span-6">Overview</span></a>
+        <a class="nav-link" href="/#capabilities" data-automation-id="element-nav-link-3"><span data-automation-id="element-span-7">Capabilities</span></a>
+        <a class="nav-link" href="/#experience" data-automation-id="element-nav-link-4"><span data-automation-id="element-span-8">Experience</span></a>
+        <a class="nav-link" href="/#education" data-automation-id="element-nav-link-5"><span data-automation-id="element-span-9">Education</span></a>
+        <a class="nav-link" href="/#contact" data-automation-id="element-nav-link-6"><span data-automation-id="element-span-10">Contact</span></a>
+        <a class="nav-link active" href="/blog" aria-current="page" data-automation-id="element-nav-link-7"><span data-automation-id="element-span-11">Blog</span></a>
+      </nav>
+      <div class="rail-footer" data-automation-id="element-rail-footer-5">
+        <div class="rail-location" data-automation-id="element-rail-location-6"><span class="pin" role="img" aria-label="Location" data-automation-id="element-pin-12">⌖</span><span data-automation-id="element-span-13">Älvsjö / Stockholm, Sweden</span></div>
+        <div class="rail-socials" data-automation-id="element-rail-socials-7">
+          <a href="mailto:deep.sudipta@gmail.com" aria-label="Email Sudipta" data-automation-id="element-a-8">Email <span data-automation-id="element-span-14">↗</span></a>
+          <a href="https://www.linkedin.com/in/duttasudipta" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in new tab)" data-automation-id="element-a-9">LinkedIn <span data-automation-id="element-span-15">↗</span></a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content blog-main" data-automation-id="element-main-content-1">
+      <header class="topbar" id="top" data-automation-id="element-top-1">
+        <div class="topbar-label" data-automation-id="element-topbar-label-8">TECHNICAL NOTE 2026</div>
+        <div class="topbar-actions" data-automation-id="element-topbar-actions-9">
+          <a class="blog-back" href="/blog" data-automation-id="element-blog-back-10">All notes <span data-automation-id="element-span-16">↗</span></a>
+          <button class="theme-button" id="themeToggle" type="button" aria-label="Open appearance settings" aria-controls="themeMenu" aria-haspopup="dialog" aria-expanded="false" data-automation-id="element-themetoggle-1"><span class="theme-icon" aria-hidden="true" data-automation-id="element-theme-icon-17">◐</span><span data-automation-id="element-span-18">Appearance</span></button>
+        </div>
+        <div class="theme-menu" id="themeMenu" role="dialog" aria-label="Appearance settings" hidden data-automation-id="element-thememenu-10">
+          <div class="theme-menu-title" data-automation-id="element-theme-menu-title-11">Appearance</div>
+          <div class="theme-modes" role="radiogroup" aria-label="Color mode" data-automation-id="element-theme-modes-12">
+            <button type="button" class="mode-option active" role="radio" data-mode="dark" aria-checked="true" aria-pressed="true" data-automation-id="element-mode-option-2">Dark <span aria-hidden="true" data-automation-id="element-span-19">◐</span></button>
+            <button type="button" class="mode-option" role="radio" data-mode="light" aria-checked="false" aria-pressed="false" data-automation-id="element-mode-option-3">Light <span aria-hidden="true" data-automation-id="element-span-20">○</span></button>
+            <button type="button" class="mode-option" role="radio" data-mode="system" aria-checked="false" aria-pressed="false" data-automation-id="element-mode-option-4">System <span aria-hidden="true" data-automation-id="element-span-21">⌘</span></button>
+          </div>
+          <div class="theme-menu-title accent-title" data-automation-id="element-theme-menu-title-13">Accent</div>
+          <div class="accent-options" role="group" aria-label="Accent color" data-automation-id="element-accent-options-14">
+            <button class="accent-option active" data-accent="mint" aria-pressed="true" style="--swatch:#9de8c2" aria-label="Mint accent" data-automation-id="element-accent-option-5"></button>
+            <button class="accent-option" data-accent="violet" aria-pressed="false" style="--swatch:#bdadff" aria-label="Violet accent" data-automation-id="element-accent-option-6"></button>
+            <button class="accent-option" data-accent="amber" aria-pressed="false" style="--swatch:#f4bd74" aria-label="Amber accent" data-automation-id="element-accent-option-7"></button>
+            <button class="accent-option" data-accent="blue" aria-pressed="false" style="--swatch:#8cc9ff" aria-label="Blue accent" data-automation-id="element-accent-option-8"></button>
+          </div>
+        </div>
+        <span class="sr-only" id="themeStatus" aria-live="polite" data-automation-id="theme-status"></span>
+      </header>
+
+      <section class="post-page section-pad" data-automation-id="element-post-page-1">
+        <a class="back-to-blog" href="/blog" data-automation-id="element-back-to-blog-11">← Back to all notes</a>
+        <div id="postMeta" class="post-meta" aria-live="polite" data-automation-id="element-postmeta-15"></div>
+        <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1"><div class="blog-loading" data-automation-id="element-blog-loading-16">Loading note…</div></article>
+        <div id="postError" class="blog-error" hidden data-automation-id="element-posterror-17"></div>
+      </section>
+
+      <footer class="footer section-pad" data-automation-id="element-footer-1"><span data-automation-id="element-span-22">© <span id="year" data-automation-id="element-year-23">2026</span> Sudipta Dutta</span><span data-automation-id="element-span-24">Designed for quality-minded teams <span class="footer-dot" data-automation-id="element-footer-dot-25">◆</span></span><a href="#top" data-automation-id="element-a-12">Back to top ↑</a></footer>
+    </main>
+  </div>
+  <script src="/blog.js" data-automation-id="element-script-1"></script>
+</body>
+</html>

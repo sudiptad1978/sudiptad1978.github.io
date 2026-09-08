@@ -699,3 +699,14 @@ h2 span { color: var(--muted); }
   .hero-proof-stat strong { font-size: clamp(2.35rem, 10vw, 3.25rem); }
   .stats-strip-secondary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* Forward-looking AI capability card. */
+.ai-capability {
+  grid-column: 1 / -1;
+  border-color: color-mix(in srgb, var(--accent) 52%, var(--line));
+  background: linear-gradient(115deg, var(--accent-soft), var(--surface) 68%);
+}
+.ai-capability .capability-icon { color: var(--accent); font-size: 30px; }
+.ai-capability h3 { color: var(--ink); }
+.ai-capability:hover { background: linear-gradient(115deg, color-mix(in srgb, var(--accent-soft) 90%, var(--surface)), var(--surface-2) 68%); }
+@media (max-width: 760px) { .ai-capability { grid-column: span 1; } }
