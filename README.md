@@ -393,10 +393,11 @@ Keep the `bookingModal` markup, `data-booking-open` triggers and `booking-frame`
 1. Create or edit the event type in Cal.com.
 2. Connect the Google Calendar used for availability.
 3. Configure the meeting duration, availability window, buffer and minimum notice.
-4. Select Google Meet or another supported meeting location.
-5. Publish the event type.
-6. Copy the public event URL into `index.html`.
-7. Open the production hero CTA and complete a test booking.
+4. Set weekday availability to `12:00–13:00` and `16:00–21:00` in `Europe/Stockholm`.
+5. Select Google Meet or another supported meeting location.
+6. Publish the event type.
+7. Copy the public event URL into `index.html`.
+8. Open the production hero CTA and complete a test booking.
 
 Do not place Cal.com account passwords, Google OAuth credentials or provider API keys in this repository.
 
