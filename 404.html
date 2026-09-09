@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-automation-id="element-html-404">
+<head data-automation-id="element-head-404">
+  <meta charset="utf-8" data-automation-id="element-meta-404-1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" data-automation-id="element-meta-404-2"/>
+  <meta name="theme-color" content="#0b1116" data-automation-id="element-meta-404-3"/>
+  <meta name="robots" content="noindex" data-automation-id="element-meta-404-robots"/>
+  <meta name="description" content="Page not found on Sudipta Dutta's portfolio. Return to the portfolio or the technical notes blog." data-automation-id="element-meta-404-4"/>
+  <title>Page not found — Sudipta Dutta</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" data-automation-id="element-link-404-1"/>
+  <link rel="icon" href="/favicon.ico" sizes="48x48" data-automation-id="element-link-404-2"/>
+  <link rel="stylesheet" href="/styles.css" data-automation-id="element-link-404-3"/>
+  <script data-automation-id="element-script-404-theme">
+    // Mirror the theme/accent choices saved by script.js on the main pages.
+    // Applied here, before first paint, and without loading script.js: this page
+    // has none of the DOM nodes that script.js dereferences unguarded (year,
+    // themeToggle, themeMenu, rail, qrCode, copyLink, blogCarousel, bookingModal),
+    // so loading it here would throw before setTheme() ever ran and leave a
+    // light-theme visitor staring at a dark page.
+    //
+    // The stylesheet keys off body[data-theme] / body[data-accent], so the
+    // attributes are written onto <html> and then mirrored onto <body> by the
+    // second snippet below. Keep both blocks in sync with script.js setTheme().
+    (function () {
+      var dark = true;
+      try {
+        var mode = localStorage.getItem('sd-theme-mode') || 'dark';
+        document.documentElement.dataset.accentBoot = localStorage.getItem('sd-accent') || 'mint';
+        if (mode === 'system') {
+          dark = !window.matchMedia || window.matchMedia('(prefers-color-scheme: dark)').matches;
+        } else {
+          dark = mode !== 'light';
+        }
+      } catch (e) { /* storage blocked: fall back to the stylesheet default */ }
+      document.documentElement.dataset.themeBoot = dark ? 'dark' : 'light';
+    })();
+  </script>
+  <style data-automation-id="element-style-404-theme">
+    /* Fallback until the mirror script below runs, so the first paint is right. */
+    html[data-theme-boot="light"] body { background: #f6f8fb; color: #101822; }
+  </style>
+</head>
+<body data-theme="dark" data-accent="mint" data-automation-id="element-body-404">
+  <script data-automation-id="element-script-404-mirror">
+    // Runs immediately after <body> exists, before paint: copy the boot values
+    // onto <body>, where the stylesheet's selectors actually look.
+    (function (b) {
+      var h = document.documentElement;
+      b.setAttribute('data-theme', h.dataset.themeBoot || 'dark');
+      b.setAttribute('data-accent', h.dataset.accentBoot || 'mint');
+    })(document.body);
+  </script>
+  <a class="skip-link" href="#main-content" data-automation-id="skip-to-content-404">Skip to content</a>
+  <div class="site-shell" data-automation-id="element-site-shell-404">
+    <aside class="rail" aria-label="Profile navigation" data-automation-id="element-rail-404">
+      <div class="rail-topline" data-automation-id="element-rail-topline-404"><span class="status-dot" aria-hidden="true" data-automation-id="element-status-dot-404"></span><span data-automation-id="element-span-404-1">Available for impact</span></div>
+      <a class="identity" href="/" aria-label="Back to portfolio" data-automation-id="element-identity-404">
+        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-404"><img class="avatar" src="/assets/hash/profile.36a69f7bd4.webp" alt="Profile portrait" data-automation-id="element-avatar-404"/></div>
+        <div class="identity-copy" data-automation-id="element-identity-copy-404"><strong data-automation-id="element-strong-404">Sudipta Dutta</strong><span data-automation-id="element-span-404-2">Quality Engineering</span></div>
+      </a>
+      <nav class="nav-links" id="siteNav" aria-label="Main navigation" data-automation-id="element-sitenav-404">
+        <a class="nav-link" href="/" data-automation-id="element-nav-link-404-1"><span data-automation-id="element-span-404-3">Overview</span></a>
+        <a class="nav-link" href="/#capabilities" data-automation-id="element-nav-link-404-2"><span data-automation-id="element-span-404-4">Capabilities</span></a>
+        <a class="nav-link" href="/#experience" data-automation-id="element-nav-link-404-3"><span data-automation-id="element-span-404-5">Experience</span></a>
+        <a class="nav-link" href="/blog" data-automation-id="element-nav-link-404-4"><span data-automation-id="element-span-404-6">Blog</span></a>
+        <a class="nav-link" href="/resume.pdf" data-automation-id="element-nav-link-404-5"><span data-automation-id="element-span-404-7">Résumé</span></a>
+      </nav>
+      <div class="rail-footer" data-automation-id="element-rail-footer-404">
+        <div class="rail-location" data-automation-id="element-rail-location-404"><span class="pin" role="img" aria-label="Location" data-automation-id="element-pin-404">⌖</span><span data-automation-id="element-span-404-8">Älvsjö / Stockholm, Sweden</span></div>
+        <div class="rail-socials" data-automation-id="element-rail-socials-404">
+          <a href="mailto:deep.sudipta@gmail.com" aria-label="Email Sudipta" data-automation-id="element-a-404-1">Email <span data-automation-id="element-span-404-9">↗</span></a>
+          <a href="https://www.linkedin.com/in/duttasudipta" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn profile (opens in new tab)" data-automation-id="element-a-404-2">LinkedIn <span data-automation-id="element-span-404-10">↗</span></a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="main-content" data-automation-id="element-main-content-404">
+      <header class="topbar" data-automation-id="element-topbar-404">
+        <div class="topbar-label" data-automation-id="element-topbar-label-404">ERROR 404 · NOT FOUND</div>
+        <div class="topbar-actions" data-automation-id="element-topbar-actions-404"><a class="text-button" href="/" data-automation-id="element-text-button-404">Back to portfolio</a></div>
+      </header>
+
+      <section class="hero section-pad" aria-labelledby="notfound-title" data-automation-id="element-hero-404">
+        <div class="hero-copy" data-automation-id="element-hero-copy-404">
+          <div class="eyebrow" data-automation-id="element-eyebrow-404">THAT ROUTE DOES NOT EXIST</div>
+          <h1 id="notfound-title" data-automation-id="element-h1-404">We could not find that page.</h1>
+          <p class="hero-lede" data-automation-id="element-hero-lede-404">The link may be out of date, or the section you wanted lives on the homepage. Everything here is a real destination — this page is served with a genuine <code>404</code> status so crawlers and link checkers can tell the difference.</p>
+          <div class="hero-actions" data-automation-id="element-hero-actions-404">
+            <a class="primary-button" href="/" data-automation-id="element-primary-button-404">Back to portfolio <span aria-hidden="true">→</span></a>
+            <a class="secondary-button" href="/blog" data-automation-id="element-secondary-button-404">Read the technical notes <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer section-pad" data-automation-id="element-footer-404"><span data-automation-id="element-span-404-11">© 2026 Sudipta Dutta</span><span class="footer-visitor-count" data-visitor-counter hidden aria-live="polite"><span class="footer-visitor-label">Portfolio visits</span><strong data-visitor-total>—</strong></span><span data-automation-id="element-span-404-12">Designed for quality-minded teams <span class="footer-dot" aria-hidden="true" data-automation-id="element-footer-dot-404">◆</span></span><a href="/" data-automation-id="element-a-404-3">Back to portfolio ↑</a></footer>
+  </div>
+  <script src="/visitor-counter.js" defer data-automation-id="visitor-counter-script-404"></script>
+</body>
+</html>

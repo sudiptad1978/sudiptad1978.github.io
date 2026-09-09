@@ -31,6 +31,7 @@ The QR code uses the current page origin at runtime, so it follows the Cloudflar
 ├── blog/<slug>/index.html             # Article route: /blog/<slug>
 ├── content/blog/index.json            # Ordered list of Markdown posts
 ├── content/blog/*.md                  # Markdown posts with frontmatter
+├── 404.html                           # Real 404 response (see "Not-found handling")
 ├── _headers                           # Cloudflare Pages security/cache headers
 ├── _redirects                         # Root fallback rule
 ├── functions/api/visits.js            # Public visitor-counter Pages Function
@@ -315,6 +316,30 @@ cache those addresses), plus `/favicon.ico` and `/favicon.svg`, which browsers
 request by convention. Those originals stay in `assets/` and are also cached for
 a year, so swapping a file without re-running the hash step refreshes on the
 next revalidation for hashed pages and immediately for the crawler-facing ones.
+
+## Not-found handling
+
+Cloudflare Pages serves `index.html` with a **200** status for any unmatched
+route unless a `404.html` file exists at the output root. Without it every typo,
+dead link and missing asset is a soft 404, which is why a path check such as
+`curl -I .../nope` always looks healthy. `404.html` is that file: unmatched paths
+now return a genuine `404` with a styled page.
+
+Two consequences worth knowing:
+
+- `404.html` does **not** load `script.js`. That script dereferences several
+  elements unguarded (`year`, `themeToggle`, `themeMenu`, `rail`, `qrCode`,
+  `copyLink`, `blogCarousel`, `bookingModal`), so on a page without them it would
+  throw before applying the theme. The 404 instead carries a small inline
+  bootstrap that mirrors the `sd-theme-mode` / `sd-accent` values onto
+  `body[data-theme]` / `body[data-accent]`, and reuses `visitor-counter.js`,
+  which returns early when its elements are absent.
+- Valid routes are unaffected: `/blog` resolves from `blog/index.html` and
+  `/blog/<slug>` is 308-normalised to its trailing slash by Pages itself.
+
+`_redirects` still contains `/ /index.html 200`. It matches only the exact root,
+which Pages already serves from `index.html`, so it is redundant rather than
+harmful, and it is not what caused the soft 404.
 
 ## Analytics and public visitor counter
 
