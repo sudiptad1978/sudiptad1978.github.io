@@ -1,7 +1,28 @@
+# Cloudflare Pages response headers.
+# Docs: https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Pages INHERITS the headers of every matching rule and JOINS duplicate
+# header names with a comma, so a Cache-Control set under /* is never
+# overridden by /assets/* - it is appended to it. A rule for /assets/*
+# that only *adds* Cache-Control therefore produces the broken value
+# "no-cache, no-store, must-revalidate, public, max-age=31536000, immutable"
+# (no-store wins, nothing is cached). Prefix the name with "! " to detach
+# the inherited value first, then set the one we want.
+
+# HTML is the only thing that must never go stale after a deployment, so the
+# no-store policy stays on the catch-all and is detached for long-lived assets.
 /*
   Cache-Control: no-cache, no-store, must-revalidate
+  Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Images/graphics are safe to cache for a year. The detached Cache-Control
+# below replaces the inherited no-store policy instead of colliding with it.
+# `immutable` is deliberately omitted: /assets/profile.jpeg is referenced
+# without a ?v= string, so a stale copy would be pinned for a full year after
+# any swap. Re-add `immutable` if assets ever get content-hashed filenames.
 /assets/*
-  Cache-Control: public, max-age=31536000, immutable
+  ! Cache-Control
+  Cache-Control: public, max-age=31536000
