@@ -32,7 +32,7 @@
     <aside class="rail" aria-label="Profile navigation" data-automation-id="element-rail-1">
       <div class="rail-topline" data-automation-id="element-rail-topline-2"><span class="status-dot" data-automation-id="element-status-dot-1"></span><span data-automation-id="element-span-2">Available for impact</span></div>
       <a class="identity" href="/" aria-label="Back to portfolio" data-automation-id="element-identity-1">
-        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-3"><img class="avatar" src="/assets/profile.webp" alt="Profile portrait"  data-automation-id="element-avatar-1"/></div>
+        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-3"><img class="avatar" src="/assets/hash/profile.36a69f7bd4.webp" alt="Profile portrait"  data-automation-id="element-avatar-1"/></div>
         <div class="identity-copy" data-automation-id="element-identity-copy-4"><strong data-automation-id="element-strong-1">Sudipta Dutta</strong><span data-automation-id="element-span-3">Quality Engineering</span></div>
       </a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation menu" data-automation-id="menu-toggle"><span class="menu-toggle-icon" aria-hidden="true" data-automation-id="element-menu-toggle-icon-4"><i data-automation-id="element-i-1"></i><i data-automation-id="element-i-2"></i><i data-automation-id="element-i-3"></i></span><span data-automation-id="element-span-5">Menu</span></button>
@@ -87,26 +87,26 @@
           <div class="post-tags" data-automation-id="post-tags"><span data-automation-id="post-tag-1">Mobile</span><span data-automation-id="post-tag-2">Maestro</span><span data-automation-id="post-tag-3">Automation</span><span data-automation-id="post-tag-4">CI/CD</span></div>
         </div>
         <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1" data-static-post-content="true">
-          <h2>What Maestro is good at</h2>
+          <h2 id="what-maestro-is-good-at">What Maestro is good at</h2>
 <p>Maestro is a declarative UI testing framework for mobile and web flows. You describe a customer journey in YAML, connect to a running app on an Android emulator or iOS Simulator, and let Maestro drive the interface.</p>
 <p>The useful distinction is this: Maestro is excellent for high-value user journeys and smoke coverage. It should complement, not replace, unit tests, API checks, component tests and exploratory testing.</p>
 <p>This guide walks through a maintainable setup for a small mobile automation suite and finishes with a CI and cloud execution path.</p>
-<p><figure class="post-figure"><img src="/assets/blog/maestro-flow.svg" alt="A five-step Maestro customer journey from launching an app through verifying state" loading="lazy"><figcaption>A five-step Maestro customer journey from launching an app through verifying state</figcaption></figure></p>
+<p>![A five-step Maestro customer journey from launching an app through verifying state](assets/hash/maestro-flow.e3c0abcc59.svg)</p>
 <p><em>Visual 1 — Model a flow around a customer outcome, not around a collection of screens.</em></p>
-<h2>Step 1: Prepare the test environment</h2>
+<h2 id="step-1-prepare-the-test-environment">Step 1: Prepare the test environment</h2>
 <p>Before writing YAML, make sure the target device and app are ready.</p>
-<h3>Android</h3>
+<h3 id="android">Android</h3>
 <ol><li>Install Android Studio.</li><li>Create an Android Virtual Device from <strong>Virtual Device Manager</strong>.</li><li>Start the emulator and confirm that <code>adb devices</code> lists it.</li><li>Build and install a debug or release-candidate APK.</li><li>Record the package ID, for example <code>com.example.reader</code>.</li></ol>
-<h3>iOS</h3>
+<h3 id="ios">iOS</h3>
 <ol><li>Install Xcode and select the Command Line Tools in <strong>Xcode → Settings → Locations</strong>.</li><li>Open an iOS Simulator with <strong>Xcode → Open Developer Tool → Simulator</strong>.</li><li>Build and install the simulator-compatible <code>.app</code>.</li><li>Record the bundle identifier.</li><li>If simulators are missing, run <code>xcodebuild -runFirstLaunch</code> and install an iOS runtime from <strong>Xcode → Settings → Platforms</strong>.</li></ol>
 <p>The official QuickStart is the best source for current operating-system and simulator requirements because supported versions change over time.</p>
-<h2>Step 2: Install Maestro</h2>
+<h2 id="step-2-install-maestro">Step 2: Install Maestro</h2>
 <p>Maestro offers a desktop application and a CLI workflow. The desktop application is useful for discovering devices and recording the first flow. The CLI is the better fit for source control and CI.</p>
 <p>Use the official installation instructions for your operating system, then verify the installation:</p>
 <pre><code class="language-bash">maestro --version
 maestro --help</code></pre>
 <p>For a command-line-first setup, follow the installation instructions in the official Maestro CLI documentation rather than copying an old installer command into a build machine.</p>
-<h2>Step 3: Create a flow workspace</h2>
+<h2 id="step-3-create-a-flow-workspace">Step 3: Create a flow workspace</h2>
 <p>Keep flows in a predictable directory. A useful starting structure is:</p>
 <pre><code class="language-text">.maestro/
 ├── smoke.yaml
@@ -119,7 +119,7 @@ maestro --help</code></pre>
 <p>Create the first flow:</p>
 <pre><code class="language-bash">mkdir -p .maestro/subflows
 touch .maestro/smoke.yaml</code></pre>
-<h2>Step 4: Write the first flow</h2>
+<h2 id="step-4-write-the-first-flow">Step 4: Write the first flow</h2>
 <p>Start with one customer-visible outcome. This example launches a reader app, signs in, searches for a title and verifies that the library is visible.</p>
 <pre><code class="language-yaml"># .maestro/smoke.yaml
 appId: com.example.reader
@@ -143,7 +143,7 @@ appId: com.example.reader
 - assertVisible: &quot;Start reading&quot;
 - takeScreenshot: &quot;reader-ready&quot;</code></pre>
 <p>The flow is intentionally readable. A developer should be able to understand the product journey without opening the test runner.</p>
-<h2>Step 5: Choose stable selectors</h2>
+<h2 id="step-5-choose-stable-selectors">Step 5: Choose stable selectors</h2>
 <p>Selector quality is the difference between a useful suite and a flaky suite.</p>
 <p>Prefer this order:</p>
 <ol><li>Accessibility labels and identifiers that represent user intent.</li><li>Stable test IDs exposed by the application.</li><li>Visible text when it is part of the product contract.</li><li>Coordinates only as a last resort.</li></ol>
@@ -151,9 +151,9 @@ appId: com.example.reader
 <pre><code class="language-yaml">- tapOn:
     id: &quot;search-button&quot;</code></pre>
 <p>Avoid selectors that depend on layout position, generated text, animation timing or a localized string unless the test is explicitly validating that locale.</p>
-<h3>Make the app testable</h3>
+<h3 id="make-the-app-testable">Make the app testable</h3>
 <p>Testability is a product capability. Agree with developers on identifiers for critical actions such as sign in, search, play, pause, subscription and logout. Keep identifiers stable while allowing the visible text to change with design and localization.</p>
-<h2>Step 6: Reuse setup with subflows</h2>
+<h2 id="step-6-reuse-setup-with-subflows">Step 6: Reuse setup with subflows</h2>
 <p>When the same sign-in path appears in many tests, isolate it:</p>
 <pre><code class="language-yaml"># .maestro/subflows/sign-in.yaml
 - tapOn:
@@ -175,21 +175,21 @@ appId: com.example.reader
 - inputText: &quot;The Quality Engineer&quot;
 - assertVisible: &quot;Start reading&quot;</code></pre>
 <p>A subflow should hide repeatable mechanics, not hide the business intent of the test.</p>
-<h2>Step 7: Run locally</h2>
+<h2 id="step-7-run-locally">Step 7: Run locally</h2>
 <p>With a device or simulator running and the app installed:</p>
 <pre><code class="language-bash">maestro test .maestro/smoke.yaml</code></pre>
 <p>Run a directory when you want the complete local smoke pack:</p>
 <pre><code class="language-bash">maestro test .maestro</code></pre>
 <p>If a command is not recognized by the installed version, use <code>maestro test --help</code> and the official command reference for the version on your machine. Keep the CLI version visible in CI logs.</p>
-<h3>Debug a failure systematically</h3>
+<h3 id="debug-a-failure-systematically">Debug a failure systematically</h3>
 <ol><li>Run only the smallest flow that reproduces the failure.</li><li>Confirm the target device and app build are the expected ones.</li><li>Inspect the current view hierarchy using Maestro&#x27;s supported inspection tools.</li><li>Replace a brittle selector with a stable ID or accessibility label.</li><li>Add a screenshot at the last known-good state.</li><li>Check whether the failure is UI, identity, network, test data or device state.</li><li>Remove temporary waits after the root cause is fixed.</li></ol>
 <p>Do not cure a timing problem by adding large sleeps everywhere. Wait for a visible state or a meaningful application condition instead.</p>
-<h2>Step 8: Design for permissions and test data</h2>
+<h2 id="step-8-design-for-permissions-and-test-data">Step 8: Design for permissions and test data</h2>
 <p>Permission dialogs and first-run onboarding are part of the mobile state machine. Decide whether each flow should:</p>
 <ul><li>Start with a clean install and handle permissions.</li><li>Start from an authenticated, seeded test account.</li><li>Use a reset hook before the flow.</li><li>Validate the permission path in a dedicated flow.</li></ul>
 <p>Keep secrets out of YAML files. Pass environment-specific values through the supported environment-variable or CI secret mechanism, and make sure logs do not print passwords, tokens or recovery codes.</p>
 <p>Test data should be deterministic. A flow that searches for a title or subscription should not depend on a shared account that another test can mutate at the same time.</p>
-<h2>Step 9: Add API and mobile evidence together</h2>
+<h2 id="step-9-add-api-and-mobile-evidence-together">Step 9: Add API and mobile evidence together</h2>
 <p>A mobile failure often has a backend cause. Pair the UI flow with API and service-layer checks so the failure can be isolated quickly:</p>
 <pre><code class="language-text">UI flow fails
     ├── Screen state or selector problem
@@ -197,9 +197,9 @@ appId: com.example.reader
     ├── API contract or service problem
     └── Device, permission or network problem</code></pre>
 <p>The mobile flow proves the customer journey. API checks prove the service contract. Together they provide faster root-cause analysis than either layer alone.</p>
-<h2>Step 10: Put Maestro into CI</h2>
+<h2 id="step-10-put-maestro-into-ci">Step 10: Put Maestro into CI</h2>
 <p>Start with a small smoke flow on pull requests. Run a wider device matrix after merge or before release. The goal is fast feedback first, then confidence at the right stage.</p>
-<p><figure class="post-figure"><img src="/assets/blog/maestro-ci.svg" alt="A CI feedback loop from pull request smoke flows through a device matrix to release confidence" loading="lazy"><figcaption>A CI feedback loop from pull request smoke flows through a device matrix to release confidence</figcaption></figure></p>
+<p>![A CI feedback loop from pull request smoke flows through a device matrix to release confidence](assets/hash/maestro-ci.90183d0105.svg)</p>
 <p><em>Visual 2 — Put the cheapest useful signal first, then increase coverage as the change moves toward release.</em></p>
 <p>A repository might use this layout:</p>
 <pre><code class="language-text">.maestro/
@@ -228,22 +228,22 @@ jobs:
   --app-file app-release.apk \
   --flows .maestro</code></pre>
 <p>A failing Flow should return a failing CI status. A passing Flow should publish enough evidence—screenshots, logs and a run URL—for the team to trust the result.</p>
-<h2>Step 11: Define a quality bar</h2>
+<h2 id="step-11-define-a-quality-bar">Step 11: Define a quality bar</h2>
 <p>Before calling a flow release-ready, check:</p>
 <ul><li>It expresses one customer outcome.</li><li>It uses stable selectors.</li><li>It controls account and device state.</li><li>It does not leak credentials.</li><li>It produces an actionable failure.</li><li>It can run repeatedly without manual cleanup.</li><li>It is fast enough for its place in the pipeline.</li><li>It has an owner when the product changes.</li></ul>
 <p>A test count is not a quality strategy. A small, trusted set of journeys is more valuable than a large, flaky catalogue.</p>
-<h2>Common failure patterns</h2>
-<h3><code>Element not found</code></h3>
+<h2 id="common-failure-patterns">Common failure patterns</h2>
+<h3 id="element-not-found"><code>Element not found</code></h3>
 <p>Inspect the view hierarchy and confirm whether the application exposes the expected accessibility label or ID. Check that the app is on the expected screen before changing the selector.</p>
-<h3>Flow passes locally but fails in CI</h3>
+<h3 id="flow-passes-locally-but-fails-in-ci">Flow passes locally but fails in CI</h3>
 <p>Compare app build, OS image, locale, permissions, device size, network access and test data. Print versions and device information in the CI log.</p>
-<h3>Authentication is flaky</h3>
+<h3 id="authentication-is-flaky">Authentication is flaky</h3>
 <p>Use a dedicated test identity, seed it deterministically and keep login as a reusable subflow. If the product uses OIDC, validate the identity service separately so a mobile test does not become the only authentication check.</p>
-<h3>Tests slow down over time</h3>
+<h3 id="tests-slow-down-over-time">Tests slow down over time</h3>
 <p>Remove duplicate journeys, keep pull-request coverage focused and move broad device regression to a later stage. Measure duration and flake rate as quality metrics.</p>
-<h2>Official documentation and tutorials</h2>
+<h2 id="official-documentation-and-tutorials">Official documentation and tutorials</h2>
 <ul><li><a href="https://docs.maestro.dev/get-started/quickstart" target="_blank" rel="noopener noreferrer">Maestro QuickStart ↗</a> — install the tools, connect a device and run a first Flow.</li><li><a href="https://docs.maestro.dev/getting-started/writing-your-first-flow" target="_blank" rel="noopener noreferrer">Writing Your First Flow ↗</a> — first YAML flow and local execution.</li><li><a href="https://docs.maestro.dev/maestro-cli" target="_blank" rel="noopener noreferrer">Maestro CLI overview ↗</a> — CLI concepts and commands.</li><li><a href="https://docs.maestro.dev/reference" target="_blank" rel="noopener noreferrer">Maestro reference and selectors ↗</a> — commands and interaction patterns.</li><li><a href="https://docs.maestro.dev/cloud/ci-integration/integration-with-any-ci-platform" target="_blank" rel="noopener noreferrer">Running Flows on CI ↗</a> — generic CI integration.</li><li><a href="https://docs.maestro.dev/maestro-cloud/ci-cd-integration/github-actions" target="_blank" rel="noopener noreferrer">GitHub Actions integration ↗</a> — official GitHub Actions integration.</li><li><a href="https://docs.maestro.dev/maestro-cloud/run-tests-on-maestro-cloud" target="_blank" rel="noopener noreferrer">Run tests on Maestro Cloud ↗</a> — cloud execution and reports.</li><li><a href="https://docs.maestro.dev/community/articles-and-tutorials" target="_blank" rel="noopener noreferrer">Official Articles &amp; Tutorials ↗</a> — community tutorials and examples.</li><li><a href="https://github.com/mobile-dev-inc/maestro" target="_blank" rel="noopener noreferrer">Maestro GitHub repository ↗</a> — source code and issue tracker.</li></ul>
-<h2>Final takeaway</h2>
+<h2 id="final-takeaway">Final takeaway</h2>
 <p>Maestro works best when the flow is readable, the app is testable and the feedback arrives early. Start with one critical customer journey, make the state deterministic, choose resilient selectors and connect the result to CI. Then expand coverage from observed risk instead of chasing a percentage.</p>
         </article>
 

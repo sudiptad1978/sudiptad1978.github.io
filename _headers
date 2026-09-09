@@ -18,11 +18,11 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
-# Images/graphics are safe to cache for a year. The detached Cache-Control
-# below replaces the inherited no-store policy instead of colliding with it.
-# `immutable` is deliberately omitted: /assets/profile.jpeg is referenced
-# without a ?v= string, so a stale copy would be pinned for a full year after
-# any swap. Re-add `immutable` if assets ever get content-hashed filenames.
+# Long-lived media: content-hashed copies live in /assets/hash/ (see
+# make_assets_hashed.py) and originals keep their canonical, crawler-facing
+# URLs. The detached Cache-Control replaces the inherited no-store policy
+# instead of colliding with it; `immutable` is safe now that every rendered
+# reference embeds the hash of the bytes being served.
 /assets/*
   ! Cache-Control
-  Cache-Control: public, max-age=31536000
+  Cache-Control: public, max-age=31536000, immutable

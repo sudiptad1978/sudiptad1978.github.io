@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
+  <title id="title">A Maestro mobile test flow</title>
+  <desc id="desc">A five-step mobile journey from launching an app through sign in, search, playback and verifying state after returning.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#16242d"/><stop offset="1" stop-color="#0b1116"/></linearGradient>
+    <linearGradient id="mint" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#9de8c2"/><stop offset="1" stop-color="#5fc79a"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#9de8c2"/></marker>
+  </defs>
+  <rect width="1200" height="430" rx="10" fill="url(#bg)"/>
+  <text x="54" y="58" fill="#9de8c2" font-family="monospace" font-size="16" letter-spacing="3">A CUSTOMER JOURNEY AS A FLOW</text>
+  <text x="54" y="92" fill="#f0f5f1" font-family="Arial, sans-serif" font-size="25" font-weight="600">Keep the test close to the outcome.</text>
+  <g font-family="Arial, sans-serif">
+    <g transform="translate(54 158)">
+      <rect width="185" height="150" rx="8" fill="#111a21" stroke="#49616b"/>
+      <circle cx="28" cy="30" r="17" fill="#9de8c2"/><text x="28" y="36" fill="#07100c" text-anchor="middle" font-size="16" font-weight="700">1</text>
+      <text x="24" y="78" fill="#f0f5f1" font-size="20" font-weight="600">Launch app</text>
+      <text x="24" y="108" fill="#9da9a8" font-size="15">Clean session</text><text x="24" y="130" fill="#9da9a8" font-size="15">and device state</text>
+    </g>
+    <path d="M255 233H289" stroke="#9de8c2" stroke-width="2" marker-end="url(#arrow)"/>
+    <g transform="translate(310 158)">
+      <rect width="185" height="150" rx="8" fill="#111a21" stroke="#49616b"/>
+      <circle cx="28" cy="30" r="17" fill="#9de8c2"/><text x="28" y="36" fill="#07100c" text-anchor="middle" font-size="16" font-weight="700">2</text>
+      <text x="24" y="78" fill="#f0f5f1" font-size="20" font-weight="600">Sign in</text>
+      <text x="24" y="108" fill="#9da9a8" font-size="15">Use stable test</text><text x="24" y="130" fill="#9da9a8" font-size="15">data and selectors</text>
+    </g>
+    <path d="M511 233H545" stroke="#9de8c2" stroke-width="2" marker-end="url(#arrow)"/>
+    <g transform="translate(566 158)">
+      <rect width="185" height="150" rx="8" fill="#111a21" stroke="#49616b"/>
+      <circle cx="28" cy="30" r="17" fill="#9de8c2"/><text x="28" y="36" fill="#07100c" text-anchor="middle" font-size="16" font-weight="700">3</text>
+      <text x="24" y="78" fill="#f0f5f1" font-size="20" font-weight="600">Search</text>
+      <text x="24" y="108" fill="#9da9a8" font-size="15">Assert visible</text><text x="24" y="130" fill="#9da9a8" font-size="15">customer content</text>
+    </g>
+    <path d="M767 233H801" stroke="#9de8c2" stroke-width="2" marker-end="url(#arrow)"/>
+    <g transform="translate(822 158)">
+      <rect width="185" height="150" rx="8" fill="#111a21" stroke="#49616b"/>
+      <circle cx="28" cy="30" r="17" fill="#9de8c2"/><text x="28" y="36" fill="#07100c" text-anchor="middle" font-size="16" font-weight="700">4</text>
+      <text x="24" y="78" fill="#f0f5f1" font-size="20" font-weight="600">Play / read</text>
+      <text x="24" y="108" fill="#9da9a8" font-size="15">Check the key</text><text x="24" y="130" fill="#9da9a8" font-size="15">experience signal</text>
+    </g>
+  </g>
+  <path d="M1007 233H1080V350H145V318" fill="none" stroke="#6c8b81" stroke-width="2" stroke-dasharray="7 7" marker-end="url(#arrow)"/>
+  <text x="600" y="380" fill="#f4bd74" font-family="monospace" font-size="14" letter-spacing="2" text-anchor="middle">RETURN TO THE APP · VERIFY SESSION AND PROGRESS</text>
+</svg>

@@ -14,7 +14,7 @@ The useful distinction is this: Maestro is excellent for high-value user journey
 
 This guide walks through a maintainable setup for a small mobile automation suite and finishes with a CI and cloud execution path.
 
-![A five-step Maestro customer journey from launching an app through verifying state](/assets/blog/maestro-flow.svg)
+![A five-step Maestro customer journey from launching an app through verifying state](assets/hash/maestro-flow.e3c0abcc59.svg)
 
 *Visual 1 — Model a flow around a customer outcome, not around a collection of screens.*
 
@@ -221,7 +221,7 @@ The mobile flow proves the customer journey. API checks prove the service contra
 
 Start with a small smoke flow on pull requests. Run a wider device matrix after merge or before release. The goal is fast feedback first, then confidence at the right stage.
 
-![A CI feedback loop from pull request smoke flows through a device matrix to release confidence](/assets/blog/maestro-ci.svg)
+![A CI feedback loop from pull request smoke flows through a device matrix to release confidence](assets/hash/maestro-ci.90183d0105.svg)
 
 *Visual 2 — Put the cheapest useful signal first, then increase coverage as the change moves toward release.*
 

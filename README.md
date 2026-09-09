@@ -21,6 +21,7 @@ The QR code uses the current page origin at runtime, so it follows the Cloudflar
 ├── assets/profile.jpeg                # Profile portrait
 ├── resume.pdf                         # Downloadable resume
 ├── make_resume_pdf.py                 # Rebuilds resume.pdf with Python stdlib
+├── make_assets_hashed.py              # Content-hashes assets/ and repoints rendered refs
 ├── favicon.svg
 ├── blog.html                          # Blog template source
 ├── post.html                          # Blog article template source
@@ -85,15 +86,21 @@ Open <http://localhost:8788>. Use this option when checking `_headers`, `_redire
 2. Update layout, typography and responsive behavior in `styles.css`.
 3. Update interactions in `script.js`.
 4. Replace `assets/profile.jpeg` if the profile image changes.
-5. Rebuild the PDF after changing resume content:
+5. Re-hash media so browsers can cache it forever: `python3 make_assets_hashed.py`.
+6. Rebuild the PDF after changing resume content:
 
    ```bash
    python3 make_resume_pdf.py
    ```
 
-6. Test desktop and mobile widths.
-7. Check the phone link, LinkedIn link, resume download, theme switcher and QR scanner.
-8. Commit the change and deploy.
+7. Test desktop and mobile widths.
+8. Check the phone link, LinkedIn link, resume download, theme switcher and QR scanner.
+9. Validate, then commit and deploy:
+
+   ```bash
+   python3 make_assets_hashed.py --check   # fail if hashed copies/references drifted
+   python3 make_assets_hashed.py --verify  # fail on any broken local reference
+   ```
 
 ### Theme settings
 
@@ -276,6 +283,38 @@ https://<deployment-id>.sudipta-dutta-portfolio.pages.dev
 7. Save the configuration and trigger the first deployment.
 
 After Git integration is enabled, pushes to `main` can trigger automatic Pages deployments. Avoid mixing automatic Git deployments and manual Wrangler deployments unless that is intentional.
+
+## Asset caching and content hashing
+
+Static assets are served with a one-year `Cache-Control` because `_headers`
+detaches the inherited `no-store` policy for `/assets/*` (Pages joins duplicate
+header values instead of overriding them, so a rule that only *adds*
+`Cache-Control` can never win).
+
+Rendered images are served from content-hashed copies under `assets/hash/`,
+which makes `immutable` safe: the hash in the filename *is* the bytes being
+served, so a visitor can never be pinned to a stale image.
+
+```bash
+python3 make_assets_hashed.py            # build hashed copies + rewrite refs
+python3 make_assets_hashed.py --check    # exit 1 if the build is stale
+python3 make_assets_hashed.py --verify   # exit 1 on broken local references
+```
+
+Build order matters. `make_blog_static.py` regenerates `blog/**/index.html`
+from `content/blog/*.md`, so run it first and hash afterwards:
+
+```bash
+python3 make_blog_static.py
+python3 make_assets_hashed.py
+```
+
+References that must stay at a stable URL are left on the original path on
+purpose: `og:image`, `twitter:image` and the JSON-LD `image` field (crawlers
+cache those addresses), plus `/favicon.ico` and `/favicon.svg`, which browsers
+request by convention. Those originals stay in `assets/` and are also cached for
+a year, so swapping a file without re-running the hash step refreshes on the
+next revalidation for hashed pages and immediately for the crawler-facing ones.
 
 ## Analytics and public visitor counter
 

@@ -32,7 +32,7 @@
     <aside class="rail" aria-label="Profile navigation" data-automation-id="element-rail-1">
       <div class="rail-topline" data-automation-id="element-rail-topline-2"><span class="status-dot" data-automation-id="element-status-dot-1"></span><span data-automation-id="element-span-2">Available for impact</span></div>
       <a class="identity" href="/" aria-label="Back to portfolio" data-automation-id="element-identity-1">
-        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-3"><img class="avatar" src="/assets/profile.webp" alt="Profile portrait"  data-automation-id="element-avatar-1"/></div>
+        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-3"><img class="avatar" src="/assets/hash/profile.36a69f7bd4.webp" alt="Profile portrait"  data-automation-id="element-avatar-1"/></div>
         <div class="identity-copy" data-automation-id="element-identity-copy-4"><strong data-automation-id="element-strong-1">Sudipta Dutta</strong><span data-automation-id="element-span-3">Quality Engineering</span></div>
       </a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation menu" data-automation-id="menu-toggle"><span class="menu-toggle-icon" aria-hidden="true" data-automation-id="element-menu-toggle-icon-4"><i data-automation-id="element-i-1"></i><i data-automation-id="element-i-2"></i><i data-automation-id="element-i-3"></i></span><span data-automation-id="element-span-5">Menu</span></button>
@@ -87,12 +87,12 @@
           <div class="post-tags" data-automation-id="post-tags"><span data-automation-id="post-tag-1">Claude Code</span><span data-automation-id="post-tag-2">Playwright</span><span data-automation-id="post-tag-3">MCP</span><span data-automation-id="post-tag-4">AI-Augmented QA</span></div>
         </div>
         <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1" data-static-post-content="true">
-          <h2>AI assistance is most useful inside a quality system</h2>
+          <h2 id="ai-assistance-is-most-useful-inside-a-quality-system">AI assistance is most useful inside a quality system</h2>
 <p>Claude Code is not a replacement for test design, product context or engineering judgement. It is a fast pair programmer that can inspect a repository, explain unfamiliar code, draft a test, run a focused command and iterate on the result.</p>
 <p>That distinction matters. The useful goal is not to generate the largest possible test suite. It is to shorten the distance between a risk being identified and a trustworthy automated signal being added to the delivery path.</p>
 <p>My preferred operating model is simple:</p>
 <ol><li>Give the agent a bounded task and the relevant product context.</li><li>Ask for a plan before asking for code.</li><li>Generate the smallest useful test change.</li><li>Run the test locally and inspect the diff.</li><li>Keep the human review responsible for risk, assertions and release intent.</li></ol>
-<h2>Start with repository instructions</h2>
+<h2 id="start-with-repository-instructions">Start with repository instructions</h2>
 <p>An agent produces better work when the repository explains how quality is expected to work. Keep the instructions short, explicit and versioned alongside the code.</p>
 <pre><code class="language-text">Quality checks for this repository:
 
@@ -103,7 +103,7 @@
 - Run the smallest relevant project command before changing scope.
 - Explain changed files and remaining risks in the final response.</code></pre>
 <p>The instruction about not weakening an assertion is especially important. A passing test with a missing or vague assertion is not a quality improvement; it is a quieter failure mode.</p>
-<h2>A repeatable Playwright workflow</h2>
+<h2 id="a-repeatable-playwright-workflow">A repeatable Playwright workflow</h2>
 <p>A practical task might be: add coverage for a new sign-in error state. I would give Claude Code the acceptance criteria, the existing test conventions and the expected command boundary.</p>
 <pre><code class="language-text">Inspect the existing Playwright tests and identify the closest sign-in flow.
 
@@ -127,12 +127,12 @@ test(&#x27;shows an accessible error for invalid credentials&#x27;, async ({ pag
   await expect(page).toHaveURL(/sign-in/);
 });</code></pre>
 <p>The assertion is specific, the locators describe user intent and the URL check protects the journey boundary. Claude Code can draft this shape quickly, but the quality engineer still decides whether these are the right signals.</p>
-<h2>Use MCP as a controlled context boundary</h2>
+<h2 id="use-mcp-as-a-controlled-context-boundary">Use MCP as a controlled context boundary</h2>
 <p>The Model Context Protocol can connect an agent to tools and data sources through a consistent interface. For quality engineering, that might mean a read-only connection to test documentation, an issue tracker, a service catalogue or a local test-data utility.</p>
 <p>Start conservatively:</p>
 <ul><li>Prefer read-only tools before write-capable tools.</li><li>Expose the smallest useful data set.</li><li>Keep credentials and production data outside prompts.</li><li>Make destructive actions require an explicit human step.</li><li>Record which external context influenced a generated change.</li></ul>
 <p>A useful first MCP integration is not an autonomous defect bot. It is a searchable source of acceptance criteria and known product terminology that reduces context switching while keeping the change under review.</p>
-<h2>Maintain tests, not just generate them</h2>
+<h2 id="maintain-tests-not-just-generate-them">Maintain tests, not just generate them</h2>
 <p>The highest-value use is often maintenance. When a UI change breaks a locator, Claude Code can inspect the component, compare nearby tests and propose a repair. The review question should be: does the new locator still express the user contract?</p>
 <p>A robust maintenance prompt can be narrow:</p>
 <pre><code class="language-text">The checkout test fails because the submit button locator no longer resolves.
@@ -141,21 +141,21 @@ Propose the smallest locator update that preserves the user-facing intent.
 Do not change the assertion or add a fallback locator without explaining why.
 Run the focused test after the change.</code></pre>
 <p>This keeps the agent from turning a locator failure into a broad, unreviewed rewrite.</p>
-<h2>Add guardrails to CI</h2>
+<h2 id="add-guardrails-to-ci">Add guardrails to CI</h2>
 <p>A reliable workflow separates generation from acceptance. A pull request can include an agent-produced change, but CI should still run the same checks as any other contribution:</p>
 <ul><li>formatting and type checks</li><li>focused Playwright tests</li><li>the relevant regression slice</li><li>trace, screenshot or video evidence when useful</li><li>a human review of assertions and test data</li></ul>
 <p>The agent can summarize failures, group repeated symptoms and suggest a next experiment. It should not silently convert a red build into a green one or close a defect without evidence.</p>
-<h2>Measure the quality of the workflow</h2>
+<h2 id="measure-the-quality-of-the-workflow">Measure the quality of the workflow</h2>
 <p>Track outcomes that tell you whether the agent is helping:</p>
 <ul><li>time from acceptance criterion to first useful test</li><li>review rework on generated changes</li><li>flaky-test rate before and after adoption</li><li>escaped defects covered by new scenarios</li><li>time spent triaging CI failures</li></ul>
 <p>Avoid measuring success by the number of generated tests. A smaller suite with clear ownership, stable signals and meaningful assertions is usually more valuable than a large suite that teams stop trusting.</p>
-<h2>A safe adoption sequence</h2>
+<h2 id="a-safe-adoption-sequence">A safe adoption sequence</h2>
 <p>A pragmatic rollout can happen in four steps:</p>
 <ol><li><strong>Pairing:</strong> use Claude Code locally for explanation, test plans and small test changes.</li><li><strong>Repository context:</strong> add quality instructions, conventions and focused commands.</li><li><strong>Controlled integrations:</strong> introduce read-only MCP tools for documentation and issue context.</li><li><strong>Delivery feedback:</strong> connect generated changes to CI evidence and review metrics.</li></ol>
 <p>This sequence keeps the quality bar visible while the team learns where agent assistance is genuinely useful.</p>
-<h2>Final thought</h2>
+<h2 id="final-thought">Final thought</h2>
 <p>AI-augmented quality engineering works when the agent accelerates disciplined practice rather than replacing it. Claude Code can help turn a clear risk into a test faster. MCP can make the right context available at the right time. The quality leader still owns the question that matters most: what evidence should make this release trustworthy?</p>
-<h2>Further reading</h2>
+<h2 id="further-reading">Further reading</h2>
 <ul><li><a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noopener noreferrer">Claude Code documentation ↗</a></li><li><a href="https://modelcontextprotocol.io/introduction" target="_blank" rel="noopener noreferrer">Model Context Protocol introduction ↗</a></li><li><a href="https://playwright.dev/docs/test-intro" target="_blank" rel="noopener noreferrer">Playwright test documentation ↗</a></li></ul>
         </article>
 

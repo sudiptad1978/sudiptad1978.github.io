@@ -32,7 +32,7 @@
     <aside class="rail" aria-label="Profile navigation" data-automation-id="element-rail-1">
       <div class="rail-topline" data-automation-id="element-rail-topline-2"><span class="status-dot" data-automation-id="element-status-dot-1"></span><span data-automation-id="element-span-2">Available for impact</span></div>
       <a class="identity" href="/" aria-label="Back to portfolio" data-automation-id="element-identity-1">
-        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-3"><img class="avatar" src="/assets/profile.webp" alt="Profile portrait"  data-automation-id="element-avatar-1"/></div>
+        <div class="avatar-wrap" data-automation-id="element-avatar-wrap-3"><img class="avatar" src="/assets/hash/profile.36a69f7bd4.webp" alt="Profile portrait"  data-automation-id="element-avatar-1"/></div>
         <div class="identity-copy" data-automation-id="element-identity-copy-4"><strong data-automation-id="element-strong-1">Sudipta Dutta</strong><span data-automation-id="element-span-3">Quality Engineering</span></div>
       </a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Open navigation menu" data-automation-id="menu-toggle"><span class="menu-toggle-icon" aria-hidden="true" data-automation-id="element-menu-toggle-icon-4"><i data-automation-id="element-i-1"></i><i data-automation-id="element-i-2"></i><i data-automation-id="element-i-3"></i></span><span data-automation-id="element-span-5">Menu</span></button>
@@ -87,21 +87,21 @@
           <div class="post-tags" data-automation-id="post-tags"><span data-automation-id="post-tag-1">API</span><span data-automation-id="post-tag-2">CI/CD</span><span data-automation-id="post-tag-3">Shift-left</span></div>
         </div>
         <article id="postContent" class="post-content" aria-live="polite" data-automation-id="element-postcontent-1" data-static-post-content="true">
-          <h2>Shift-left is about feedback, not moving a test earlier</h2>
+          <h2 id="shift-left-is-about-feedback-not-moving-a-test-earlier">Shift-left is about feedback, not moving a test earlier</h2>
 <p>Moving a long end-to-end suite into a pull request does not automatically create a shift-left culture. The useful question is: what is the earliest point at which a meaningful signal can be produced?</p>
 <p>For APIs, that signal usually starts with the contract. A consumer should know quickly when a response shape, authorization rule or error behaviour changes unexpectedly.</p>
-<h2>A layered API quality model</h2>
+<h2 id="a-layered-api-quality-model">A layered API quality model</h2>
 <p>A practical API suite usually has several layers:</p>
 <ol><li><strong>Schema and contract checks</strong> validate the shape of requests and responses.</li><li><strong>Component checks</strong> exercise service logic with controlled dependencies.</li><li><strong>Integration checks</strong> validate real boundaries such as identity, queues and databases.</li><li><strong>Journey checks</strong> cover the few business flows that cross multiple services.</li></ol>
 <p>Each layer answers a different question. Keeping them separate prevents every change from requiring the slowest and most expensive test.</p>
-<h2>Make failures useful</h2>
+<h2 id="make-failures-useful">Make failures useful</h2>
 <p>A failed request should tell the team what changed, which contract was expected and whether the failure is deterministic. Include request correlation IDs, sanitized payloads, response status and the environment under test.</p>
 <p>Avoid dumping secrets into logs. Authentication tokens, recovery codes and customer data should be masked at the test framework boundary, not after a log has already been emitted.</p>
-<h2>Quality gates that teams trust</h2>
+<h2 id="quality-gates-that-teams-trust">Quality gates that teams trust</h2>
 <p>A good pull-request gate is fast, deterministic and owned by the engineering team. A longer suite can run after merge or before release, but it should not be the only signal available to a developer.</p>
 <p>Useful gates include:</p>
 <ul><li>Contract compatibility against the supported API versions.</li><li>Authentication and authorization checks for the changed surface.</li><li>A focused regression pack for high-risk endpoints.</li><li>Static security checks and dependency scanning.</li><li>A clear report that links failures to the owning service.</li></ul>
-<h2>The outcome</h2>
+<h2 id="the-outcome">The outcome</h2>
 <p>Shift-left API testing works when it reduces uncertainty without creating noise. Start with a small set of high-value contracts, make failures actionable and grow coverage from observed risk rather than a percentage target.</p>
         </article>
 
