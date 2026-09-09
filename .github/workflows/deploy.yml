@@ -1,0 +1,101 @@
+name: Deploy to Cloudflare Pages
+
+# Deploys the repository root to the `sudipta-dutta-portfolio` Pages project on
+# every push to main, then re-verifies the live site.
+#
+# Why a GitHub Action and not Cloudflare's built-in git integration: this
+# project is a Direct Upload project (the Pages API reports `source: null`), so
+# its Functions bindings and secrets live in the dashboard's deployment config,
+# not in wrangler.toml. Connecting a repository would switch Pages to reading
+# wrangler.toml, which declares the D1 and AI bindings but has no
+# TURNSTILE_SECRET - i.e. it would silently break the contact/chat Turnstile
+# check. `wrangler pages deploy` keeps using the stored dashboard config, which
+# is what the three manual deploys already proved (TURNSTILE_SECRET, D1 and AI
+# all survived them).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    description: Deploy the current main branch to Cloudflare Pages
+
+# A second push supersedes an in-flight deploy instead of queueing behind it.
+concurrency:
+  group: pages-deploy-main
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write # lets wrangler-action post a GitHub Deployment status
+
+jobs:
+  deploy:
+    name: Validate and deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # wrangler 4.x declares engines.node >=22 and refuses to start on older
+      # majors, so the runner's Node is pinned rather than left to chance.
+      - name: Set up Node.js 22
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "22"
+
+      - name: Check asset hashes are current
+        run: python3 make_assets_hashed.py --check
+
+      - name: Check for broken local references
+        run: python3 make_assets_hashed.py --verify
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@ebbaa1584979971c8614a24965b4405ff95890e0 # v4.0.0
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          # Public, non-secret identifier, so it is a variable rather than a
+          # secret: Settings -> Secrets and variables -> Actions -> Variables.
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          command: >-
+            pages deploy .
+            --project-name=sudipta-dutta-portfolio
+            --branch=${{ github.ref_name }}
+            --commit-dirty=true
+
+      # Fail loudly if production is not serving the commit that was just
+      # deployed, rather than reporting a green run that shipped nothing.
+      - name: Verify the live deployment
+        run: |
+          set -euo pipefail
+          base="https://sudipta-dutta-portfolio.pages.dev"
+          fail() { echo "::error::$1"; exit 1; }
+
+          code=$(curl -sS -o /dev/null -w '%{http_code}' "$base/")
+          [ "$code" = "200" ] || fail "site returned HTTP $code"
+
+          cc=$(curl -sS -o /dev/null -D - "$base/assets/profile.webp" \
+            | tr -d '\r' | grep -i '^cache-control:' | cut -d' ' -f2-)
+          case "$cc" in
+            *no-store*) fail "assets still carry no-store: $cc" ;;
+            *immutable*) ;;
+            *) fail "assets are not cached immutably: $cc" ;;
+          esac
+
+          hsts=$(curl -sS -o /dev/null -D - "$base/" | tr -d '\r' \
+            | grep -ci '^strict-transport-security:')
+          [ "$hsts" -ge 1 ] || fail "Strict-Transport-Security header is missing"
+
+          missing=$(curl -sS -o /dev/null -w '%{http_code}' \
+            "$base/ci-probe-$(date +%s)-$RANDOM")
+          [ "$missing" = "404" ] || fail "unknown path returned $missing, expected 404"
+
+          visits=$(curl -sS -X POST "$base/api/visits")
+          echo "$visits" | grep -q '"total"' \
+            || fail "visitor counter Function is broken: $visits"
+
+          chat=$(curl -sS -o /dev/null -w '%{http_code}' -X POST \
+            -H 'content-type: application/json' -d '{}' "$base/api/chat")
+          [ "$chat" = "400" ] \
+            || fail "chat Turnstile guard returned $chat, expected 400"
+
+          echo "Live site verified: cache policy, HSTS, 404 handling, D1 and Turnstile."
